@@ -193,14 +193,15 @@ module.exports = {
     {
       test: /\.vue$/,
       loader: 'vue-loader',
+      include: resolve(config.srcPaths.base),
       options: {
         loaders: {
           scss: ifProduction(
             ExtractTextPlugin.extract({
-              use: [{ loader: 'css-loader', options: {url: false}}, { loader: 'sass-loader'}],
+              use: [...CSS_LOADERS],
               fallback: 'vue-style-loader',
             }),
-            [{ loader: 'vue-style-loader'}, { loader: 'css-loader', options: {url: false}}, { loader: 'sass-loader'}]
+            [{ loader: 'vue-style-loader'}, ...CSS_LOADERS]
           ),
         },
       },
@@ -209,9 +210,11 @@ module.exports = {
       {
         test: /\.json$/,
         use: 'json-loader',
+        include: resolve(config.srcPaths.base),
       },
     {
       test: /\.css$/,
+      include: resolve(config.srcPaths.base),
       use: ifProduction(ExtractTextPlugin.extract({
       fallback: 'style-loader',
       use: ['css-loader'],
@@ -228,6 +231,7 @@ module.exports = {
     },
     {
       test: /\.(png|jpg|gif|svg)$/,
+      include: resolve(config.srcPaths.base),
       loader: 'url-loader',
       options: {
         limit: 10000,
@@ -240,6 +244,7 @@ module.exports = {
       // Match woff2 in addition to patterns like .woff?v=1.1.1.
       test: /\.(woff|woff2|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'url-loader',
+        include: resolve(config.srcPaths.base),
         options: {
         // Limit at 10k. Above that it emits separate files
         limit: 10000,
@@ -302,6 +307,7 @@ module.exports = {
     ),
     new ExtractTextPlugin({
       filename: ifDevelopment(assetsPath('css/[name].css'), assetsPath('css/[name].[chunkhash].css')),
+      allChunks: true,
     }),
     ifProduction(
       new OptimizeCSSPlugin({
@@ -319,7 +325,9 @@ module.exports = {
       log: false,
       test: /^(?!.+(?:hot-update.(js|json))).+$/,
     }),
-    new webpack.optimize.ModuleConcatenationPlugin(),
+    ifProduction(
+      new webpack.optimize.ModuleConcatenationPlugin(),
+    ),
   ]),
 };
 
