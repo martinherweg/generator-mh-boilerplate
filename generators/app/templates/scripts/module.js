@@ -13,15 +13,15 @@ const path = require('path');
 const pkg = require('../package.json');
 
 function createModule({ moduleName, components = {} }) {
-  var store = memFs.create();
-  var fs = editor.create(store);
+  const store = memFs.create();
+  const fs = editor.create(store);
   const srcPath = path.resolve(`${pkg.srcPaths.views}modules`);
   const vuePath = `${path.resolve(pkg.srcPaths.js)}`;
 
   const basePath = path.resolve(__dirname, '../');
 
-  let moduleArray = moduleName.split('/');
-  let dist = {};
+  const moduleArray = moduleName.split('/');
+  const dist = {};
   dist.name = moduleArray[moduleArray.length - 1].toLowerCase();
   dist.path = moduleArray.length > 1 ? moduleArray.slice(0, -1).join('/') : `${dist.name}`;
   const fileName = path.resolve(srcPath, `${dist.path}/${dist.name}`);
@@ -36,40 +36,40 @@ function createModule({ moduleName, components = {} }) {
       fileExtension = '.blade.php';
 
     default:
+      fileExtension = '.html';
       break;
   }
 
   try {
+    const moduleData = {
+      moduleName: dist.name,
+      authors: pkg.authors,
+      projectName: pkg.name,
+      file: `${dist.path}/${dist.name}`,
+    };
+
     if (components.js) {
-      fs.copyTpl(path.resolve(__dirname, './moduleTemplates/_script.js'), `${fileName}.scripts.js`, {
-        moduleName: dist.name,
-      });
+      fs.copyTpl(path.resolve(__dirname, './moduleTemplates/_script.js'), `${fileName}.scripts.js`, moduleData);
       console.log(`${fileName}.scripts.js`);
     }
 
     if (components.css) {
-      fs.copyTpl(path.resolve(__dirname, './moduleTemplates/_style.scss'), `${fileName}.styles.scss`, {
-        moduleName: dist.name,
-      });
+      fs.copyTpl(path.resolve(__dirname, './moduleTemplates/_style.scss'), `${fileName}.styles.scss`, moduleData);
       console.log(`${fileName}.styles.scss`);
     }
 
     if (components.template) {
-      fs.copyTpl(path.resolve(__dirname, './moduleTemplates/_template.html'), `${fileName}-template${fileExtension}`, {
-        moduleName: dist.name,
-      });
-      console.log(`${fileName}-template${fileExtension}`);
+      fs.copyTpl(path.resolve(__dirname, './moduleTemplates/_template.html'), `${fileName}${fileExtension}`, moduleData);
+      console.log(`${fileName}${fileExtension}`);
     }
 
     if (components.vue) {
-      fs.copyTpl(path.resolve(__dirname, './moduleTemplates/_template.vue'), path.resolve(`${vuePath}/${moduleName}.vue`), {
-        moduleName: dist.name,
-      });
+      fs.copyTpl(path.resolve(__dirname, './moduleTemplates/_template.vue'), path.resolve(`${vuePath}/${moduleName}.vue`), moduleData);
       console.log(`${vuePath}/${moduleName}.vue`);
     }
 
     console.log('Everything created');
-    fs.commit(function(done) {
+    fs.commit((done) => {
       console.log('done');
     });
   } catch (e) {
@@ -117,13 +117,13 @@ inquirer
       ],
     },
   ])
-  .then(async answers => {
+  .then(async (answers) => {
     createModule({
       moduleName: answers.moduleName,
       components: {
-        js: answers.components.includes('js') ? true : false,
-        css: answers.components.includes('css') ? true : false,
-        template: answers.components.includes('template') ? true : false,
+        js: !!answers.components.includes('js'),
+        css: !!answers.components.includes('css'),
+        template: !!answers.components.includes('template'),
       },
     });
   });
