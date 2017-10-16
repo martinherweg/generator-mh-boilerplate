@@ -123,7 +123,7 @@ const CSS_LOADERS = [
       autoprefixer: false,
       sourceMap: true,
       importLoaders: 3,
-      url: false,
+      url: true,
     },
   },
   {
@@ -230,36 +230,75 @@ module.exports = {
     }), ['style-loader', ...CSS_LOADERS]),
     },
     {
-      test: /\.(png|jpg|gif|svg)$/,
-      include: resolve(config.srcPaths.base),
-      loader: 'url-loader',
-      options: {
-        limit: 10000,
-          name: (path) => {
-          console.log(path);
+      test: /\.svg$/,
+        include: resolve(config.srcPaths.images.svg.base + config.srcPaths.images.svg.sprite),
+      use: [
+      {
+        loader: 'svg-sprite-loader',
+        options: {
+          esModule: false,
+          extract: true,
+          spriteFilename: 'assets/svg/sprite/sprite[hash:4].svg',
         },
       },
+      'svg-fill-loader',
+      'svgo-loader',
+    ],
+    },
+    {
+      test: /\.(png|jpg|gif|svg)$/,
+        exclude: resolve(config.srcPaths.images.svg.base + config.srcPaths.images.svg.sprite),
+      loaders: [
+      {
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: (filePath) => {
+            const filename = path.basename(filePath)
+            const folder = path.relative(config.srcPaths.images.base, filePath).replace(filename, '');
+            return `assets/${folder}[name].[hash:4].[ext]`;
+          },
+        },
+      },
+      {
+        loader: 'image-webpack-loader',
+        query: {
+          progressive: true,
+          optipng: {
+            optimizationLevel: 7,
+          },
+          gifsicle: {
+            interlaced: false,
+          },
+          svg: {
+            plugins: config.svgoPlugins,
+          },
+        },
+      },
+    ],
     },
     {
       // Match woff2 in addition to patterns like .woff?v=1.1.1.
       test: /\.(woff|woff2|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'url-loader',
-        include: resolve(config.srcPaths.base),
-        options: {
-        // Limit at 10k. Above that it emits separate files
-        limit: 10000,
+      options: {
+      // Limit at 10k. Above that it emits separate files
+      limit: 10000,
 
-          // url-loader sets mimetype if it's passed.
-          // Without this it derives it from the file extension
-          mimetype: 'application/font-woff',
+        // url-loader sets mimetype if it's passed.
+        // Without this it derives it from the file extension
+        mimetype: 'application/font-woff',
 
-          // Output below fonts directory
-          name: assetsPath('fonts/[name].[ext]'),
-      },
+        // Output below fonts directory
+        name: 'fonts/[name].[ext]',
+        publicPath: '../'
     },
+    },
+
     ],
   },
   plugins: removeEmpty([
+    new webpack.ProgressPlugin(),
     new Webpack2Polyfill(),
     new CleanWebpackPlugin([config.distPaths.css, config.distPaths.js], {
       root: BASE_PATH,
