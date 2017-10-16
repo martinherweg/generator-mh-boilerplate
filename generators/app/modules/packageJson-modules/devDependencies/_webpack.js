@@ -18,6 +18,7 @@ exports.webpackDependencies = {
   'extract-text-webpack-plugin': '^3.0.0',
   'file-loader': '^0.11.1',
   'friendly-errors-webpack-plugin': '^1.1.3',
+  'image-webpack-loader': '^3.4.2',
   'inject-loader': '^3.0.0-beta4',
   'html-webpack-plugin': '^2.28.0',
   'http-proxy-middleware': '^0.17.3',
