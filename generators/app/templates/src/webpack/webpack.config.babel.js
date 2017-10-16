@@ -310,7 +310,6 @@ module.exports = {
       statsFilename: `${BASE_PATH}/webpack/stats.json`,
       logLevel: 'info',
     })),
-    ifDevelopment(new Dashboard_plugin({ port: 3002 })),
     ifDevelopment(new webpack.HotModuleReplacementPlugin()),
     ifDevelopment(new webpack.NamedModulesPlugin()),
     ifDevelopment(new webpack.NoEmitOnErrorsPlugin()),
