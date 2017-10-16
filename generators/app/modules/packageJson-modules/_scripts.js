@@ -20,11 +20,11 @@ exports.scripts = {
     'cross-env NODE_ENV=production gulp build:production --env=production && cross-env NODE_ENV=production webpack --hide-modules --config=webpack/webpack.config.babel.js -p',
   webpack:
     'cross-env NODE_ENV=production webpack --hide-modules --config=webpack/webpack.config.babel.js',
-  'webpack:analyze': 'webpack-bundle-analyzer webpack/stats.json dist/public/',
+  'webpack:analyze': 'webpack-bundle-analyzer webpack/stats.json dist/public/'
 };
 
-exports.packageJsonScripts = function(files = {}) {
+exports.packageJsonScripts = function (files = {}) {
   extend(files.pkg, {
-    scripts: exports.scripts,
+    scripts: exports.scripts
   });
 };
