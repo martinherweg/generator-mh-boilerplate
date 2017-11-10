@@ -7,7 +7,7 @@
  * then they get renamed so you can use them online
  * also get the single files out of the sprite folder, because you never know
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

@@ -1,7 +1,7 @@
 /**
  * Test for a Craft Project Configuration
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

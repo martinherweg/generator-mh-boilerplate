@@ -1,7 +1,7 @@
 /**
  * Prompt Questions for the Author
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

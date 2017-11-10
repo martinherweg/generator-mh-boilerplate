@@ -1,7 +1,7 @@
 /**
  * Consistent style for prompt Messages
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

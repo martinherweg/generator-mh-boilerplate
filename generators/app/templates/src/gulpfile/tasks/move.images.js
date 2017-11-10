@@ -6,7 +6,7 @@
  * Copies Images from images/cssimages and images/htmlimages in the images folder in dist
  * Also they are getting minified
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

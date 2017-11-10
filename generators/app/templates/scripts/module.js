@@ -1,7 +1,7 @@
 /**
  * Create a new Module
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

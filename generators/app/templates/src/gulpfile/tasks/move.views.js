@@ -5,7 +5,7 @@
  *
  * Just copy Template Files to Dist
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

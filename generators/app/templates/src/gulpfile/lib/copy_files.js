@@ -1,7 +1,7 @@
 /**
  * Boilerplate Code for a simple copy of Files
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

@@ -5,7 +5,7 @@
  *
  * Default task run Browser Sync and Watch
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

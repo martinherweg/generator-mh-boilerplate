@@ -11,7 +11,7 @@
  *
  * SHORT DESCRIPTION OF WHAT IT DOES
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   YOUR_NAME <your_email>
  */
 

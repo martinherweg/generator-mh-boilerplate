@@ -1,7 +1,7 @@
 /**
  * Test for a Vue Project Configuration
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

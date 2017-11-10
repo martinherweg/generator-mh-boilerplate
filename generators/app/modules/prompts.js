@@ -1,7 +1,7 @@
 /**
  * Combine all the different Prompts
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

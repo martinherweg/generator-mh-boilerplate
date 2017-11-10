@@ -39,7 +39,7 @@ fresh install of Wordpress via the WP-CLI tool, you need to install this tool [h
 
 # Install
 
-```npm install -g generator-mh-boilerplate```
+```npm install -g generator-lilly```
 
 # Usage
 Jump to your Project Folder and type:

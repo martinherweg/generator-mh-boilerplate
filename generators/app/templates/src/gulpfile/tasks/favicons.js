@@ -6,7 +6,7 @@
  * Generates all necessary Favicons files for modern Browsers and plattforms
  * from a single file.
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

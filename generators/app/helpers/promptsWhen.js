@@ -1,7 +1,7 @@
 /**
  * When Helper Function for Prompts
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  *
  * When helper function to stop repeat myself

@@ -10,7 +10,7 @@
  * Move System Files like .htaccess or a index.php file to a public folder
  * These Files need to be copied from the CMS that is used.
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

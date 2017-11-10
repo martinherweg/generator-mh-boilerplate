@@ -1,7 +1,7 @@
 /**
  * Dependencies for everything that doesn't match css, javascript, gulp or webpack
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

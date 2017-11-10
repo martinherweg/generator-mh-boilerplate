@@ -1,5 +1,5 @@
 {
-  "name": "generator-mh-boilerplate",
+  "name": "generator-lilly",
   "version": "2.7.1",
   "description": "Personal Boilerplate, configurable for WP, Craft and Laravel made by Martin Herweg",
   "homepage": "https://",
@@ -57,6 +57,6 @@
       "node": true
     }
   },
-  "repository": "https://github.com/martinherweg/generator-mh-boilerplate",
+  "repository": "https://github.com/martinherweg/generator-lilly",
   "license": "Apache-2.0"
 }

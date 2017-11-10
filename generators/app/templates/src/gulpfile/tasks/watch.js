@@ -1,7 +1,7 @@
 /**
  * Defines which Files gulp watches for Changes
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

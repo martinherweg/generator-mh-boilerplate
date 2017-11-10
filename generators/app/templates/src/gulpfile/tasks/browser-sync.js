@@ -9,7 +9,7 @@ import chalk from 'chalk';
  * @description Refresh the Brwoser after File Change.
  * Combined with webpack for HMR or Content Reload
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

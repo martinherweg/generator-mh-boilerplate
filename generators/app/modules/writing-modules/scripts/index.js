@@ -1,7 +1,7 @@
 /**
  * Write Scripts Folder with useful Node scripts
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

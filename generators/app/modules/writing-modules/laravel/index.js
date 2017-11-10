@@ -1,7 +1,7 @@
 /**
  * Write a Laravel Project
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

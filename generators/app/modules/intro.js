@@ -21,7 +21,7 @@ module.exports = `${chalk.red(`
 +--------------------------------------------------------------------+--------------+
 `)}|                                                                                   |
 |Author: Martin Herweg (@martinherweg)                                              |
-|URL: https://github.com/martinherweg/generator-mh-boilerplate                      |
+|URL: https://github.com/martinherweg/generator-lilly                      |
 |                                                                                   |
 +-----------------------------------------------------------------------------------+
 `;

@@ -5,7 +5,7 @@
  *
  * Create SVG Sprite File with symbols and a SCSS File to use with background images
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

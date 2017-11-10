@@ -2,7 +2,7 @@
 /**
  * Base Test for the Generator
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 process.env.NODE_ENV = 'test';

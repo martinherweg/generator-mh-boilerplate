@@ -1,7 +1,7 @@
 /**
  * Defining the different dist Paths for different Projects
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 

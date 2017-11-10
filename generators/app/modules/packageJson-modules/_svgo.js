@@ -1,7 +1,7 @@
 /**
  * Extending package.json with SVGo Configuration
  *
- * @package  generator-mh-boilerplate
+ * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
  */
 
