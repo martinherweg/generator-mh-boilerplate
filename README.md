@@ -1,7 +1,5 @@
 # Generator Lilly
-Named after our first dog.
-
-This is kind of special and mostly suited for my own requirements
+Named after our first dog this generator fits mostly my needs and is created for my own requirements.
 
 Thanks to [Sascha Fuchs](https://github.com/gisu) for the help and his framework [Kittn](https://github.com/kittn/generator-kittn/) for the inspiration.
 
