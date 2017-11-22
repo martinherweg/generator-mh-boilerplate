@@ -264,7 +264,9 @@ module.exports = {
       {
         loader: 'image-webpack-loader',
         query: {
-          progressive: true,
+          mozjpeg: {
+            progressive: true,
+          },
           optipng: {
             optimizationLevel: 7,
           },
