@@ -19,19 +19,23 @@ const _downloadCraftScripts = () => {
   return download(url, destination, {
     extract: true,
     mode: '775'
-  }).on('response', res => {
-    if (process.env.NODE_ENV === 'test') {
-      return;
-    }
-    bar.total = res.headers['content-length'];
-    res.on('data', data => bar.tick(data.length));
-  }).then(() => commentLog({
-    message: 'Finished Download',
-    color: 'green',
-    short: true
-  }))
+  })
+    .on('response', res => {
+      if (process.env.NODE_ENV === 'test') {
+        return;
+      }
+      bar.total = res.headers['content-length'];
+      res.on('data', data => bar.tick(data.length));
+    })
+    .then(() =>
+      commentLog({
+        message: 'Finished Download',
+        color: 'green',
+        short: true
+      })
+    )
     .catch(error => console.error(error));
-}
+};
 
 const craftFolders = {
   DELETE: [
@@ -48,7 +52,7 @@ const craftFolders = {
       },
       {
         src: 'scripts/downloadPlugin.js',
-        dest: 'scripts/downloadPlugin.js',
+        dest: 'scripts/downloadPlugin.js'
       }
     ],
     nyStudio: {
@@ -68,14 +72,14 @@ const craftFolders = {
         {
           src: 'nystudio/systemFiles/',
           dest: 'src/systemFiles/'
-        },
+        }
       ]
     },
     defaultConfig: {
       files: [
         {
           src: 'default/systemFiles/',
-          dest: 'src/systemFiles',
+          dest: 'src/systemFiles'
         }
       ]
     }
@@ -85,25 +89,34 @@ const craftFolders = {
 const writingCraft = () => {
   return {
     download: context => {
-      const craftUrl = 'http://buildwithcraft.com/latest.zip?accept_license=yes';
+      const craftUrl =
+        'http://buildwithcraft.com/latest.zip?accept_license=yes';
       return downloadCraft({
         url: craftUrl,
         destination: context.destinationPath('./dist/')
       });
     },
     downloadCraftScripts: context => {
-      const scriptsUrl = 'https://github.com/nystudio107/craft-scripts/archive/master.zip';
+      const scriptsUrl =
+        'https://github.com/nystudio107/craft-scripts/archive/master.zip';
       return download(scriptsUrl, context.destinationPath('./dist/'), {
         extract: true,
         filter: file => {
           const folder = path.basename(path.dirname(file.path));
-          if ((folder === 'scripts' || folder == 'common') && file.type == 'file') return file;
+          if (
+            (folder === 'scripts' || folder == 'common') &&
+            file.type == 'file'
+          )
+            return file;
         },
         map: file => {
-          file.path = file.path.replace('craft-scripts-master/', 'craft-scripts/');
+          file.path = file.path.replace(
+            'craft-scripts-master/',
+            'craft-scripts/'
+          );
           file.path = file.path.replace('scripts/', '');
           return file;
-        },
+        }
       });
       return downloadCraft({
         url: scriptsUrl,
@@ -111,16 +124,17 @@ const writingCraft = () => {
       });
     },
     writing: context => {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         if (context.props.craftEnv === 'nystudio') {
-
           //Delete Files Folder we recreate ourself
           deleteFiles({
             filelist: craftFolders.DELETE,
             context
           });
 
-          craftFolders.SRC.nyStudio.files.forEach(file => craftFolders.SRC.files.push(file));
+          craftFolders.SRC.nyStudio.files.forEach(file =>
+            craftFolders.SRC.files.push(file)
+          );
         } // End nystudio
 
         // Copy our Folders
@@ -131,27 +145,31 @@ const writingCraft = () => {
           );
         });
 
-        const craftIgnore = fs.readFileSync(context.templatePath('craft/_gitignore'), {
-          encoding: 'UTF-8',
-        });
+        const craftIgnore = fs.readFileSync(
+          context.templatePath('craft/_gitignore'),
+          {
+            encoding: 'UTF-8'
+          }
+        );
 
         const _ignoreFile = ejs.render(craftIgnore, {
           craftEnv: context.props.craftEnv
         });
 
-
         // copy .env.example.php to .env.php
-        if(context.fs.exists(context.destinationPath('dist/.env.example.php'))) {
+        if (
+          context.fs.exists(context.destinationPath('dist/.env.example.php'))
+        ) {
           context.fs.copy(
             context.destinationPath('dist/.env.example.php'),
             context.destinationPath('dist/.env.php')
-          )
+          );
         }
 
         context.props.projectIgnore = _ignoreFile;
 
         resolve();
-      })
+      });
     }
   };
 };
