@@ -24,7 +24,7 @@ const babel = {
   'babel-cli': '^6.23.0',
   'babel-core': '^6.23.1',
   'babel-eslint': '^7.1.0',
-  'babel-plugin-lodash': '^3.2.11',
+  'babel-plugin-lodash': '^3.3.2',
   'babel-plugin-syntax-dynamic-import': '^6.18.0',
   'babel-plugin-transform-object-rest-spread': '^6.23.0',
   'babel-plugin-transform-runtime': '^6.23.0',

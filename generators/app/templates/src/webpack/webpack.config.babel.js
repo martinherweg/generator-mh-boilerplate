@@ -18,6 +18,7 @@ import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
 import OptimizeCSSPlugin from 'optimize-css-assets-webpack-plugin';
 import Webpack2Polyfill from 'webpack2-polyfill-plugin';
 import CleanWebpackPlugin from 'clean-webpack-plugin';
+import LodashPlugin from 'lodash-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 
@@ -363,6 +364,7 @@ module.exports = {
       log: false,
       test: /^(?!.+(?:hot-update.(js|json))).+$/,
     }),
+    new LodashPlugin(),
     ifProduction(
       new webpack.optimize.ModuleConcatenationPlugin(),
     ),
