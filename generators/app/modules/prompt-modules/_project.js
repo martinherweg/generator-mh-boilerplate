@@ -61,10 +61,10 @@ const generalPrompts = [
     }),
     default: function (answers) {
       // If the
-      if (answers.projectName.includes('.dev') || answers.projectName.includes('.local')) {
+      if (answers.projectName.includes('.dev') || answers.projectName.includes('.local') || answers.projectName.includes('.test')) {
         return answers.projectName;
       }
-      return `${answers.projectName}.dev`;
+      return `${answers.projectName}.test`;
     }
   },
   {
