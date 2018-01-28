@@ -15,12 +15,6 @@ const writePaths = require('../../packageJson-modules/paths/_distPaths');
 const commentLog = require('../../../helpers/_logComment');
 
 const craftFolders = {
-  DELETE: [
-    'dist/craft/templates',
-    'dist/craft/config/db.php',
-    'dist/craft/config/general.php',
-    'dist/public/'
-  ],
   SRC: {
     files: [
       {
@@ -32,34 +26,6 @@ const craftFolders = {
         dest: 'scripts/downloadPlugin.js'
       }
     ],
-    nyStudio: {
-      files: [
-        {
-          src: 'nystudio/config/db.php',
-          dest: 'dist/craft/config/db.php'
-        },
-        {
-          src: 'nystudio/config/general.php',
-          dest: 'dist/craft/config/general.php'
-        },
-        {
-          src: 'nystudio/environment/env.example.php',
-          dest: 'dist/.env.example.php'
-        },
-        {
-          src: 'nystudio/systemFiles/',
-          dest: 'src/systemFiles/'
-        }
-      ]
-    },
-    defaultConfig: {
-      files: [
-        {
-          src: 'default/systemFiles/',
-          dest: 'src/systemFiles'
-        }
-      ]
-    }
   }
 };
 
