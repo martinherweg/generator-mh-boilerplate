@@ -29,9 +29,7 @@ h6 {
 
 h1,
 .h1 {
-  font-family: fontfamily('base');
   @include fluid(fontsize('ms4'), fontsize('ms6'));
-  text-transform: uppercase;
 }
 
 h2,

@@ -21,6 +21,7 @@
 
 .c-input,
 .c-input:not([type='submit']) {
+  @include fontsize('ms0');
   appearance: none;
   display: inline-block;
 
@@ -36,7 +37,6 @@
   outline: 0;
   background: darken(c('white'), 5%);
 
-  @include fontsize('ms0');
 }
 
 
