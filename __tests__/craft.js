@@ -18,6 +18,14 @@ const {
 
 const run = () => helpers.run(path.join(__dirname, '../generators/app'));
 
+/* eslint-disable */
+
+beforeAll(() => {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000;
+});
+
+/* eslint-enable */
+
 describe('It is a Craft Project 🎉', () => {
   beforeAll(async () => {
     await run().withPrompts({
@@ -53,11 +61,13 @@ describe('It is a Craft Project 🎉', () => {
   it('adds downloadPlugin dependencies to package.json', () => {
     assert.jsonFileContent('package.json', {
       devDependencies: {
-        inquirer: '^3.1.1',
+        'fs-extra': '^5.0.0',
+        'mem-fs': '^1.1.3',
+        'mem-fs-editor': '^4.0.0',
+        inquirer: '^5.0.1',
+        'deep-extend': '^0.5.0',
         download: '^6.2.5',
-        progress: '^2.0.0',
-        'fs-extra': '^3.0.1',
-        'deep-extend': '^0.5.0'
+        progress: '^2.0.0'
       }
     });
   });
@@ -81,21 +91,21 @@ describe('It is a Craft Project 🎉', () => {
       'src/views/index.html',
       'src/views/layout/_layout.html',
       'src/views/parts/site-header.html',
-      'src/views/parts/webpack-header.html',
-      'src/views/parts/site-scripts.html'
+      'src/views/_webpack/webpack-header.html',
+      'src/views/_webpack/webpack-scripts.html'
     ]);
   });
 
   it('adds webpack content to scripts and header', () => {
     assert.fileContent(
-      'src/views/parts/site-scripts.html',
+      'src/views/_webpack/webpack-scripts.html',
       `<% for (var chunk in htmlWebpackPlugin.files.chunks) { if (!chunk.match(/font/)) { %>
 <script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
 <% }} %>
 `
     );
     assert.fileContent(
-      'src/views/parts/webpack-header.html',
+      'src/views/_webpack/webpack-header.html',
       `<% for (var css in htmlWebpackPlugin.files.css) { %>
   <link href="<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
 <% } %>
@@ -112,13 +122,13 @@ if (file.match(/\\.(js|css)$/) && !file.match(/cp/)) { %>
       'webpack/webpack.config.babel.js',
       "const chunks_inject = [\n\
       {\n\
-        filename: path.resolve(`${config.distPaths.views}parts/webpack-header.html`),\n\
-        file: config.srcPaths.views + 'parts/webpack-header.html',\n\
+        filename: path.resolve(`${config.distPaths.views}_webpack/webpack-header.html`),\n\
+        file: config.srcPaths.views + '_webpack/webpack-header.html',\n\
         inject: false,\n\
       },\n\
       {\n\
-        filename: path.resolve(`${config.distPaths.views}parts/site-scripts.html`),\n\
-        file: config.srcPaths.views + 'parts/site-scripts.html',\n\
+        filename: path.resolve(`${config.distPaths.views}_webpack/webpack-scripts.html`),\n\
+        file: config.srcPaths.views + '_webpack/webpack-scripts.html',\n\
         inject: false,\n\
       }\n\
     ]"

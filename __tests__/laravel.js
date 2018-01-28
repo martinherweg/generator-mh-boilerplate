@@ -17,6 +17,14 @@ const {configPaths} = require('../generators/app/modules/packageJson-modules/pat
 
 const run = () => helpers.run(path.join(__dirname, '../generators/app'));
 
+/* eslint-disable */
+
+beforeAll(() => {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000;
+});
+
+/* eslint-enable */
+
 describe('its a Laravel Application Whoops 🎉', () => {
   beforeAll(() => {
     return run()
@@ -53,8 +61,8 @@ describe('its a Laravel Application Whoops 🎉', () => {
       'src/views/index.blade.php',
       'src/views/_layout/_layout.blade.php',
       'src/views/_parts/site-header.blade.php',
-      'src/views/_parts/webpack-header.blade.php',
-      'src/views/_parts/site-scripts.blade.php'
+      'src/views/_webpack/webpack-header.blade.php',
+      'src/views/_webpack/webpack-scripts.blade.php'
     ]);
   });
 
@@ -68,13 +76,13 @@ describe('its a Laravel Application Whoops 🎉', () => {
   it('adds laravel chunks to webpack config', () => {
     assert.fileContent('webpack/webpack.config.babel.js', 'const chunks_inject = [\n\
       {\n\
-        filename: path.resolve(`${config.distPaths.views}_parts/webpack-header.blade.php`),\n\
-        file: config.srcPaths.views + \'_parts/webpack-header.blade.php\',\n\
+        filename: path.resolve(`${config.distPaths.views}_webpack/webpack-header.blade.php`),\n\
+        file: config.srcPaths.views + \'_webpack/webpack-header.blade.php\',\n\
         inject: false,\n\
       },\n\
       {\n\
-        filename: path.resolve(`${config.distPaths.views}_parts/site-scripts.blade.php`),\n\
-        file: config.srcPaths.views + \'_parts/site-scripts.blade.php\',\n\
+        filename: path.resolve(`${config.distPaths.views}_webpack/webpack-scripts.blade.php`),\n\
+        file: config.srcPaths.views + \'_webpack/webpack-scripts.blade.php\',\n\
         inject: false,\n\
       }\n\
     ]');
