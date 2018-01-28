@@ -1,32 +1,24 @@
 <%= projectUsage === 'craft' ? '{#' : '{{--' %>
-/**
-*
-* Description of what this file is for
-*
-* @package  <%%= projectName %%>
-<%% for (var i=0; i < authors.length; i++) { -%%>
-* @author <%%= authors[i].name %%> [<%%= authors[i].email %%>]
-<%% } -%%>
-*
-*/
+/** * * Description of what this file is for * * @package
+<%%= projectName %%>
+    <%% for (var i=0; i < authors.length; i++) { -%%>
+        * @author
+        <%%= authors[i].name %%>
+            [<%%= authors[i].email %%>]
+                <%% } -%%>
+                    * */ /* |-------------------------------------------------------------------------- |
+                    <%%= moduleName %%>
+                        |-------------------------------------------------------------------------- */
+                        <%= projectUsage === 'craft' ? '#}' : '--}}' %>
 
-/*
-|--------------------------------------------------------------------------
-| <%%= moduleName %%>
-|--------------------------------------------------------------------------
-*/
-<%= projectUsage === 'craft' ? '#}' : '--}}' %>
+                        <% if(projectUsage === 'craft') { %>
 
-<% if(projectUsage === 'craft') { %>
-
-{%% set defaults = {
+                            {%% set defaults = {
 classname: 'm-<%%= moduleName.replace('-', '_') %%>'
 } %%}
-{%% set options = options is defined ? defaults|merge(options) : defaults %%}
-<% } else if (projectUsage === 'laravel') { %>
+                            {%% set options = options is defined ? defaults|merge(options) : defaults %%}
+                            <% } else if (projectUsage === 'laravel') { %><% } %>
 
-<% } %>
-
-<div class="m-<%%= moduleName %%>">
-  <%%= moduleName %%>
-</div>
+                            <div class="m-<%%= moduleName %%>">
+                                <%%= moduleName %%>
+                                </div>

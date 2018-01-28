@@ -33,7 +33,7 @@ const paths = {
   dest_inline: `${config.srcPaths.views}`,
 };
 
-const template_extension = <% if (projectUsage == 'craft') { -%>
+const template_extension = <% if (projectUsage == 'craft' || projectUsage == 'craft3') { -%>
 '.svg.html'
 <% } else if (projectUsage == 'laravel') { -%>
 '_svg.blade.php'

@@ -23,6 +23,7 @@ const filesEnvironment = require('./config/_filesEnvironment');
 
 // Craft CMS
 const writingCraft = require('./modules/writing-modules/craft');
+const writingCraft3 = require('./modules/writing-modules/craft3');
 
 // Laravel
 const writingLaravel = require('./modules/writing-modules/laravel');
@@ -46,6 +47,7 @@ module.exports = class extends Generator {
 
     // CRAFT CMS
     this.writingCraft = writingCraft.bind(this);
+    this.writingCraft3 = writingCraft3.bind(this);
     // Laravel
     this.writingLaravel = writingLaravel.bind(this);
 
@@ -61,14 +63,15 @@ module.exports = class extends Generator {
 
   async initializing() {
     this.logComment({message: 'Initializing the Generator'});
-    await Promise.all(Object.keys(this.commands)
-      .map(command => {
+    await Promise.all(
+      Object.keys(this.commands).map(command => {
         return commandExists(command)
           .then(commandResult => {
             this.commands[commandResult] = true;
           })
           .catch(error => console.warn(error));
-      }));
+      })
+    );
   }
 
   prompting() {
@@ -89,6 +92,14 @@ module.exports = class extends Generator {
     if (this.props.projectUsage === 'craft' && this.props.craftInstall) {
       try {
         await this.writingCraft().download(this);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    if (this.props.projectUsage === 'craft3') {
+      try {
+        await this.writingCraft3().download(this);
       } catch (e) {
         console.error(e);
       }
@@ -137,6 +148,15 @@ module.exports = class extends Generator {
       }
     }
 
+    if (this.props.projectUsage === 'craft3') {
+      this.logComment({message: 'Moving Craft Folders'});
+      try {
+        await this.writingCraft3().writing(this);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
     /*
      |--------------------------------------------------------------------------
      | Writing Laravel
@@ -154,7 +174,10 @@ module.exports = class extends Generator {
       }
     }
 
-    if (this.props.projectFramework === 'vue' || this.props.projectUsage === 'vueapp') {
+    if (
+      this.props.projectFramework === 'vue' ||
+      this.props.projectUsage === 'vueapp'
+    ) {
       this.logComment({
         message: 'Adding Vue to the Project'
       });
