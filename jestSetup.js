@@ -1,3 +1,3 @@
 /* eslint-disable */
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000000;

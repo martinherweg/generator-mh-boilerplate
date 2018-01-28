@@ -22,13 +22,26 @@ const generalPrompts = [
       defaultValue: 'Current Name'
     }),
     default: function () {
-      return process.cwd().split('/').pop(-1).toLowerCase().replace(/\s/g, '');
+      return process
+        .cwd()
+        .split('/')
+        .pop(-1)
+        .toLowerCase()
+        .replace(/\s/g, '');
     },
     validate: function (input) {
       // Do async stuff
-      if (input.indexOf(' ') >= 0 || /[~`!#$%^&*+=[\]\\';,/{}|\\":<>?]/g.test(input)) {
+      if (
+        input.indexOf(' ') >= 0 ||
+        /[~`!#$%^&*+=[\]\\';,/{}|\\":<>?]/g.test(input)
+      ) {
         // Pass the return value in the done callback
-        console.log('\n' + chalk.styles.red.open + 'No whitespaces or special-chars allowed!' + chalk.styles.red.close);
+        console.log(
+          '\n' +
+            chalk.styles.red.open +
+            'No whitespaces or special-chars allowed!' +
+            chalk.styles.red.close
+        );
         return false;
       }
       return true;
@@ -61,7 +74,10 @@ const generalPrompts = [
     }),
     default: function (answers) {
       // If the
-      if (answers.projectName.includes('.dev') || answers.projectName.includes('.local')) {
+      if (
+        answers.projectName.includes('.dev') ||
+        answers.projectName.includes('.local')
+      ) {
         return answers.projectName;
       }
       return `${answers.projectName}.dev`;
@@ -79,6 +95,10 @@ const generalPrompts = [
       {
         name: 'Craft',
         value: 'craft'
+      },
+      {
+        name: 'Craft 3',
+        value: 'craft3'
       },
       {
         name: 'Laravel',

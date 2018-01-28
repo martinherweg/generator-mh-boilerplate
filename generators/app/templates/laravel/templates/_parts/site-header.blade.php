@@ -7,7 +7,7 @@
     <base href="{{ URL::to('/') }}">
 
     @include('_parts.favicons')
-    @include('_parts.webpack-header')
+    @include('_webpack.webpack-header')
     <title>Laravel</title>
 
     <!-- Fonts -->

@@ -25,6 +25,7 @@
     "jest": "^20.0.4",
     "jest-cli": "^20.0.0",
     "nsp": "^2.6.3",
+    "prettier-eslint-cli": "^4.7.0",
     "yeoman-assert": "^3.0.0",
     "yeoman-test": "^1.6.0"
   },
@@ -32,6 +33,7 @@
     "chalk": "^2.0.1",
     "command-exists": "^1.2.2",
     "deep-extend": "^0.5.0",
+    "dotenv": "^4.0.0",
     "download": "^6.2.3",
     "ejs": "^2.5.6",
     "fs-extra": "^3.0.1",

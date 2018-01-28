@@ -4,7 +4,7 @@
     @yield('content')
 </div>
 
-@include('_parts.site-scripts')
+@include('_webpack.webpack-scripts')
 @yield('javascript')
 
 </body>
