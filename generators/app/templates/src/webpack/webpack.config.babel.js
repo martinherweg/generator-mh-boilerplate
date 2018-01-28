@@ -9,14 +9,12 @@ import webpack from 'webpack';
 import { getIfUtils, removeEmpty } from 'webpack-config-utils';
 import path from 'path';
 import config from '../package.json';
-import Dashboard_plugin from 'webpack-dashboard/plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import WriteFilePlugin from 'write-file-webpack-plugin';
 import StylelintPlugin from 'stylelint-webpack-plugin';
 import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
 import OptimizeCSSPlugin from 'optimize-css-assets-webpack-plugin';
-import Webpack2Polyfill from 'webpack2-polyfill-plugin';
 import CleanWebpackPlugin from 'clean-webpack-plugin';
 import LodashPlugin from 'lodash-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
@@ -68,29 +66,29 @@ function assetsPath(_path) {
 
 let chunks = [];
 
-<% if (projectUsage === 'craft') { %>
+<% if (projectUsage === 'craft' || projectUsage === 'craft3') { %>
   const chunks_inject = [
       {
-        filename: path.resolve(`${config.distPaths.views}parts/webpack-header.html`),
-        file: config.srcPaths.views + 'parts/webpack-header.html',
+        filename: path.resolve(`${config.distPaths.views}_webpack/webpack-header.html`),
+        file: config.srcPaths.views + '_webpack/webpack-header.html',
         inject: false,
       },
       {
-        filename: path.resolve(`${config.distPaths.views}parts/site-scripts.html`),
-        file: config.srcPaths.views + 'parts/site-scripts.html',
+        filename: path.resolve(`${config.distPaths.views}_webpack/webpack-scripts.html`),
+        file: config.srcPaths.views + '_webpack/webpack-scripts.html',
         inject: false,
       }
     ]
     <% } else if (projectUsage === 'laravel') { %>
   const chunks_inject = [
       {
-        filename: path.resolve(`${config.distPaths.views}_parts/webpack-header.blade.php`),
-        file: config.srcPaths.views + '_parts/webpack-header.blade.php',
+        filename: path.resolve(`${config.distPaths.views}_webpack/webpack-header.blade.php`),
+        file: config.srcPaths.views + '_webpack/webpack-header.blade.php',
         inject: false,
       },
       {
-        filename: path.resolve(`${config.distPaths.views}_parts/site-scripts.blade.php`),
-        file: config.srcPaths.views + '_parts/site-scripts.blade.php',
+        filename: path.resolve(`${config.distPaths.views}_webpack/webpack-scripts.blade.php`),
+        file: config.srcPaths.views + '_webpack/webpack-scripts.blade.php',
         inject: false,
       }
     ]
@@ -172,6 +170,9 @@ module.exports = {
       'src': resolve(config.srcPaths.base),
       '@': resolve(config.srcPaths.base),
       modules: resolve(`${config.srcPaths.views}modules/`),
+      css: resolve(config.srcPaths.css),
+      js: resolve(config.srcPaths.js),
+      fonts: resolve(config.srcPath.fonts),
     },
   },
   module: {
@@ -180,7 +181,7 @@ module.exports = {
         test: /\.(js<%_ if (projectFramework === 'vue' || projectUsage === 'vueapp' ) { _%>|vue<% } %>)$/,
         loader: 'eslint-loader',
         options: {
-          formatter: require("eslint-friendly-formatter"),
+          formatter: require("eslint-formatter-pretty"),
         },
         enforce: 'pre',
         include: resolve(config.srcPaths.base),
@@ -302,7 +303,6 @@ module.exports = {
   },
   plugins: removeEmpty([
     new webpack.ProgressPlugin(),
-    new Webpack2Polyfill(),
     new CleanWebpackPlugin([config.distPaths.css, config.distPaths.js], {
       root: BASE_PATH,
       verbose: true,

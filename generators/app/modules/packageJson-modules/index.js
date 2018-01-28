@@ -13,7 +13,9 @@ const {packageJsonCss} = require('./devDependencies/_css');
 const {packageJsonJavascript} = require('./devDependencies/_javascript');
 const {packageJsonOther} = require('./devDependencies/_other');
 const {packageJsonScriptsDependencies} = require('./devDependencies/_scripts');
-const {packageJsonCraftDownloadPluginDependencies} = require('./devDependencies/_craftDownloadPlugin');
+const {
+  packageJsonCraftDownloadPluginDependencies
+} = require('./devDependencies/_craftDownloadPlugin');
 const {writeSrcPaths} = require('./paths/_srcPaths');
 const {writeDistPaths} = require('./paths/_distPaths');
 const {packageJsonBrowsersList} = require('./_browserlist');
@@ -41,6 +43,14 @@ const packageJsonModules = (files = {}, context) => {
     writeDistPaths({
       files,
       projectUsage: 'craft'
+    });
+  }
+
+  if (context.props.projectUsage === 'craft3') {
+    packageJsonCraftDownloadPluginDependencies(files);
+    writeDistPaths({
+      files,
+      projectUsage: 'craft3'
     });
   }
 

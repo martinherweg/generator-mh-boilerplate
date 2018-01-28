@@ -1,10 +1,13 @@
-require('babel-core/register')({
+require('@babel/register')({
   presets: [
-    ['es2015']
+    ["@babel/preset-env", {
+      "targets": {
+        "node": "7.6.0"
+      },
+    }]
   ]
-})
+});
 
-//import requireDir from 'require-dir';
 const requireDir = require('require-dir');
 
 requireDir('./gulpfile/tasks', { recurse: true });

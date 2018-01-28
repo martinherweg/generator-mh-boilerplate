@@ -9,22 +9,22 @@
 const extend = require('deep-extend');
 
 exports.dependencies = {
-  vue: '^2.2.3'
+  vue: '^2.5.13'
 };
 
 exports.devDependencies = {
-  'eslint-plugin-vue': 'beta',
-  'vue-loader': '^12.0.4',
-  'vue-style-loader': '^3.0.1',
-  'vue-template-compiler': '^2.3.3'
+  'eslint-plugin-vue': '^4.2.0',
+  'vue-loader': '^13.7.0',
+  'vue-style-loader': '^3.1.1',
+  'vue-template-compiler': '^2.5.13'
 };
 
 exports.vueXDependencies = {
-  vuex: '^2.3.1'
+  vuex: '^3.0.1'
 };
 
 exports.routerDependencies = {
-  'vue-router': '^2.5.3'
+  'vue-router': '^3.0.1'
 };
 
 exports.packageJsonVue = (files = {}, context) => {

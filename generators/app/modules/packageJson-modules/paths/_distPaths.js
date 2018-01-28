@@ -19,6 +19,11 @@ exports.configPaths = {
     systemFiles: 'dist/public/',
     pluginFolder: 'dist/craft/plugins'
   },
+  craft3: {
+    base: `dist/web`,
+    views: 'dist/templates/',
+    systemFiles: 'dist/web/'
+  },
   laravel: {
     base: 'dist/public',
     views: 'dist/resources/views/',
