@@ -54,8 +54,6 @@
   --------------------------------------------------*/
 
 .c-button_wrapper {
-  @include container();
-
   &--center {
     text-align: center;
   }
