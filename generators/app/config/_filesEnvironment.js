@@ -52,6 +52,10 @@ module.exports = {
       dest: '.stylelintrc'
     },
     {
+      src: '_stylelintignore',
+      dest: '.stylelintignore'
+    },
+    {
       src: 'src/scss/',
       dest: 'src/scss/'
     },

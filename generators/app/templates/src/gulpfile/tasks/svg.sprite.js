@@ -57,6 +57,7 @@ const svg_sprite_config = {
       sprite: `${paths.dest}/sprite.css.svg`,
       render: {
         scss: {
+          template: `${config.srcPaths.css}tmpl/_spritetemplate.scss`,
           dest: `${config.srcPaths.css}_____generic/_generic.svg-sprite.scss`,
         },
       },
