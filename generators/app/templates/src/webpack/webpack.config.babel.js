@@ -165,14 +165,14 @@ module.exports = {
     ],
     alias: {
 <%_ if (projectFramework === 'vue' || projectUsage === 'vueapp') { _%>
-'vue$': 'vue/dist/vue.esm.js',
+      'vue$': 'vue/dist/vue.esm.js',
 <%_ } _%>
       'src': resolve(config.srcPaths.base),
       '@': resolve(config.srcPaths.base),
       modules: resolve(`${config.srcPaths.views}modules/`),
       css: resolve(config.srcPaths.css),
       js: resolve(config.srcPaths.js),
-      fonts: resolve(config.srcPath.fonts),
+      fonts: resolve(config.srcPaths.fonts),
     },
   },
   module: {
@@ -360,6 +360,7 @@ module.exports = {
     new StylelintPlugin({
       context: resolve('src/scss/'),
       syntax: 'scss',
+      formatter: require('stylelint-formatter-pretty'),
     }),
     ...chunks,
     new WriteFilePlugin({

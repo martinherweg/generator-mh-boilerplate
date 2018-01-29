@@ -11,6 +11,7 @@ const extend = require('deep-extend');
 const stylelint = {
   stylelint: '^8.4.0',
   'stylelint-config-sass-guidelines': '^4.1.0',
+  'stylelint-formatter-pretty': '^1.0.3',
   'stylelint-order': '^0.8.0',
   'stylelint-scss': '^2.2.0',
   'stylelint-selector-bem-pattern': '^2.0.0'
