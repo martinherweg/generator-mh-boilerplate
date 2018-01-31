@@ -358,7 +358,7 @@ module.exports = {
       }),
     ),
     new StylelintPlugin({
-      context: resolve('src/scss/'),
+      context: resolve('src/'),
       syntax: 'scss',
       formatter: require('stylelint-formatter-pretty'),
     }),
