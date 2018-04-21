@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/martinherweg/.nvm/versions/node/v9.4.0/bin/node /usr/local/Cellar/yarn/1.5.1_1/libexec/bin/yarn.js test craft3 --watch
+  /Users/martinherweg/.nvm/versions/node/v9.4.0/bin/node /usr/local/Cellar/yarn/1.5.1_1/libexec/bin/yarn.js test app --watch
 
 PATH: 
   /usr/local/opt/libxml2/bin:/Users/martinherweg/.yarn/bin:/Users/martinherweg/.nvm/versions/node/v9.4.0/bin:/usr/local/bin:/usr/local/opt/coreutils/libexec/gnubin:/Users/martinherweg/bin:/Users/martinherweg/.local/bin:/usr/local/bin:/Users/martinherweg/.zplug/repos/zplug/zplug/bin:/usr/local/bin:/usr/local/sbin:/etc/Caskroom:/opt/homebrew-cask/Caskroom:/Users/martinherweg/.composer/vendor/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:/opt/X11/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/usr/local/share/zsh/site-functions:/usr/local/opt/go/libexec/bin:/Users/martinherweg/.rvm/bin:/Users/martinherweg/.composer/vendor/bin:/usr/local/opt/fzf/bin
@@ -17,22 +17,17 @@ npm manifest:
   {
     "name": "generator-lilly",
     "version": "0.0.0",
-    "description": "Personal boilerplate for Martin Herweg, Configurable for Laravel, Craft CMS and Vue",
+    "description":
+      "Personal boilerplate for Martin Herweg, Configurable for Laravel, Craft CMS and Vue",
     "homepage": "https://github.com/martinherweg/lilly",
     "author": {
       "name": "Martin Herweg",
       "email": "info@martinherweg.de",
       "url": "https://martinherweg.de"
     },
-    "files": [
-      "generators"
-    ],
+    "files": ["generators"],
     "main": "generators/index.js",
-    "keywords": [
-      "craft",
-      "",
-      "yeoman-generator"
-    ],
+    "keywords": ["craft", "", "yeoman-generator"],
     "devDependencies": {
       "dotenv": "^5.0.1",
       "download": "^6.2.5",
@@ -70,20 +65,11 @@ npm manifest:
       "test": "jest"
     },
     "lint-staged": {
-      "*.js": [
-        "eslint --fix",
-        "git add"
-      ],
-      "*.json": [
-        "prettier --write",
-        "git add"
-      ]
+      "*.js": ["eslint --fix", "git add"],
+      "*.json": ["prettier --write", "git add"]
     },
     "eslintConfig": {
-      "extends": [
-        "xo",
-        "prettier"
-      ],
+      "extends": ["xo", "prettier"],
       "env": {
         "jest": true,
         "node": true
@@ -97,9 +83,7 @@ npm manifest:
           }
         ]
       },
-      "plugins": [
-        "prettier"
-      ]
+      "plugins": ["prettier"]
     },
     "repository": "git@github.com:martinherweg/lilly.git",
     "license": "Apache-2.0"
@@ -115,7 +99,7 @@ Trace:
   Error: Command failed.
   Exit code: 1
   Command: sh
-  Arguments: -c eslint .
+  Arguments: -c jest app --watch
   Directory: /Users/martinherweg/Projekte/_openSource/lilly/generator-lilly
   Output:
   
