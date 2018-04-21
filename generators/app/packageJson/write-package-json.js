@@ -6,7 +6,7 @@
  */
 
 'use strict';
-const packageJsonModules = require('../packageJson-modules/');
+const packageJsonModules = require('./index');
 
 const writePackageJson = ({ context, files = {} } = {}) => {
   packageJsonModules(

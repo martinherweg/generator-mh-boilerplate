@@ -8,7 +8,7 @@
 /* eslint-disable */
 const fs         = require('fs-extra');
 const ejs        = require('ejs');
-const writePaths = require('../../packageJson-modules/paths/_distPaths');
+const writePaths = require('../packageJson/paths/_distPaths');
 
 const writingScripts = () => {
   return {

@@ -10,9 +10,9 @@ const fs = require('fs-extra');
 const path = require('path');
 const ejs = require('ejs');
 const dotenv = require('dotenv');
-const deleteFiles = require('../../../helpers/_deleteFolderRecursive');
-const writePaths = require('../../packageJson-modules/paths/_distPaths');
-const commentLog = require('../../../helpers/_logComment');
+const deleteFiles = require('../helpers/deleteFolderRecursive');
+const writePaths = require('../packageJson/paths/_distPaths');
+const commentLog = require('../helpers/logComment');
 
 const craftFolders = {
   SRC: {

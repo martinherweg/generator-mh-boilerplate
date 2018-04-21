@@ -7,7 +7,7 @@
 
 const download = require('download');
 const ProgressBar = require('progress');
-const commentLog = require('./_logComment');
+const commentLog = require('./logComment');
 
 const bar = new ProgressBar('[:bar] :percent :etas', {
   complete: '=',

@@ -28,7 +28,7 @@ module.exports = class extends Generator {
     this.option('beta');
 
     // Bind usages
-    this.craft = craft2.bind(this);
+    this.craft2 = craft2.bind(this);
     this.craft3 = craft3.bind(this);
     this.laravel = laravel.bind(this);
 
@@ -69,7 +69,7 @@ module.exports = class extends Generator {
     // Install Craft or Laravel and configure their Folders for our needs.
     if (this.props.projectUsage === 'craft' && this.props.craftInstall) {
       try {
-        await this.craft.download(this);
+        await this.craft2().download(this);
       } catch (e) {
         console.error(e);
       }
@@ -86,7 +86,7 @@ module.exports = class extends Generator {
     // Download fresh copy of craft-scripts by ny-studio
     if (this.props.projectUsage === 'craft') {
       try {
-        await this.craft().downloadCraftScripts(this);
+        await this.craft2().downloadCraftScripts(this);
       } catch (e) {
         console.error(e);
       }
@@ -192,10 +192,11 @@ module.exports = class extends Generator {
     });
 
     const environmentFiles = require('./writeFiles/environment-files');
+    const writePackageJson = require('./packageJson/write-package-json');
 
     filesEnvironmentProgress.total = environmentFiles.files.length;
 
-    this.filesEnviroment.files.forEach(file => {
+    environmentFiles.files.forEach(file => {
       this.fs.copyTpl(
         this.templatePath(file.src),
         this.destinationPath(file.dest),
@@ -204,7 +205,7 @@ module.exports = class extends Generator {
       filesEnvironmentProgress.tick(1);
     });
     // Write Basic package.json
-    this.writePackageJson({
+    writePackageJson({
       context: this,
       files: {
         pkg,

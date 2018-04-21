@@ -49,7 +49,11 @@ exports.craftDownloadPluginStandardPlugins = [
 
 exports.packageJsonCraftDownloadPluginDependencies = (files = {}) => {
   extend(files.pkg, {
-    craftPlugins: exports.craftDownloadPluginStandardPlugins,
+    craftPluginDownloader: {
+      tmpFolder: 'tmp/',
+      pluginPath: 'dist/craft/plugins/',
+      plugins: exports.craftDownloadPluginStandardPlugins,
+    },
     devDependencies: exports.craftDownloadPluginDependencies,
     scripts: exports.craftDownloadPluginScripts,
   });

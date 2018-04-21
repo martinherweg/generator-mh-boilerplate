@@ -7,11 +7,11 @@
 
 /* eslint-disable */
 const fs = require('fs-extra');
-const logComment = require('../../../helpers/_logComment');
-const downloadCraft = require('../../../helpers/_downloadFiles');
-const deleteFiles = require('../../../helpers/_deleteFolderRecursive');
+const logComment = require('../helpers/logComment');
+const downloadCraft = require('../helpers/downloadFiles');
+const deleteFiles = require('../helpers/deleteFolderRecursive');
 
-const laravelFolders = require('./_laravelFiles');
+const laravelFolders = require('./laravel/_laravelFiles');
 
 const writingLaravel = () => {
   return {

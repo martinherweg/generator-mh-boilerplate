@@ -7,9 +7,9 @@
 
 /* eslint-disable */
 const fs = require('fs-extra');
-const logComment = require('../../../helpers/_logComment');
-const vueFiles = require('./_vueFiles');
-const vueDependencies = require('../../packageJson-modules/dependencies/_vue');
+const logComment = require('../helpers/logComment');
+const vueFiles = require('./vue/_vueFiles');
+const vueDependencies = require('../packageJson/dependencies/_vue');
 let vueImports = [`import Vue from 'vue';`, `\nimport App from './App.vue';`];
 
 exports.renderInstance = function (vueInstanceOptions) {

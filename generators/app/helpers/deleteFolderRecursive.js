@@ -6,7 +6,7 @@
  */
 
 const fs = require('fs-extra');
-const logMessage = require('./_logComment');
+const logMessage = require('./logComment');
 
 exports.deleteFolderRecursive = path => {
   if (fs.existsSync(path)) {
