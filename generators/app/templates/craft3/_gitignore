@@ -1,0 +1,14 @@
+#===================================#
+#     Craft CMS                  #
+#===================================#
+dist/.env
+dist/.env.php
+dist/.env.sh
+dist/.idea
+dist/vendor
+dist/storage/*
+!/storage/.gitkeep
+dist/templates
+dist/web
+dist/scripts/.env.sh
+dist/craft-scripts/.env.sh
