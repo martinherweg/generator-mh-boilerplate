@@ -1,13 +1,19 @@
-<template>
+<template><%_ if(projectUsage === 'vueapp' || projectVuePlugins.includes('vuerouter')) { -%>
   <div id="app">
-    <% if(projectUsage === 'vueapp' || projectVuePlugins.includes('vuerouter')) { %>
     <router-view></router-view>
-    <% } %>
   </div>
-</template>
+<% } else { -%>
+<div id="app" />
+<%_ } -%></template>
 
 <script>
-  export default {
-    name: 'App',
-  };
+export default {
+  name: 'App',
+};
 </script>
+
+<style lang="scss">
+  #app {
+    color: color('white');
+  }
+</style>

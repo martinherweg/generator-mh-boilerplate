@@ -17,15 +17,11 @@ exports.srcPaths = {
     js: 'src/js/',
     favicons: 'src/favicons/',
     images: {
-      base: 'src/images/',
+      base: 'src/images/bitmap/',
       svg: {
         base: 'src/images/svg/',
         single: 'single/',
         sprite: 'sprite/',
-      },
-      bitmap: {
-        cssimages: 'cssimages/',
-        htmlimages: 'htmlimages/',
       },
     },
   },

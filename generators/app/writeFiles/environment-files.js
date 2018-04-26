@@ -6,6 +6,12 @@
  */
 
 module.exports = {
+  simpleCopy: [
+    {
+      src: 'src/boilerplates/typography.html',
+      dest: 'src/boilerplates/typography.html',
+    },
+  ],
   files: [
     {
       src: '_gulpfile.babel.js',

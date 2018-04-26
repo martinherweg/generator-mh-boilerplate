@@ -51,10 +51,6 @@ exports.writeDistPaths = function({ files = {}, projectUsage = 'default' }) {
         sprite: `${assetBase}/images/svg/sprite/`,
         inline: inlineSvgPath,
       },
-      bitmap: {
-        cssimages: `${assetBase}/images/cssimages/`,
-        htmlimages: `${assetBase}/images/htmlimages/`,
-      },
     },
   };
 

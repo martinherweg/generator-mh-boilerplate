@@ -13,7 +13,7 @@ const eslint = {
   'eslint-config-airbnb-base': '^12.1.0',
   'eslint-config-defaults': '^9.0.0',
   'eslint-config-prettier': '^2.6.0',
-  'eslint-formatter-pretty': '^1.3.0',
+  'eslint-friendly-formatter': '^4.0.1',
   'eslint-import-resolver-webpack': '^0.8.4',
   'eslint-plugin-html': '^4.0.2',
   'eslint-plugin-import': '^2.8.0',

@@ -32,8 +32,8 @@ const argv = yargs.argv;
 const env = argv.env || 'development';
 
 const browserSyncTask = () => {
-  if(env !== 'browser-sync') return;
-  const bundler = webpack(webpackSettings);
+  if (env !== 'browser-sync') return;
+  const bundler = webpack(webpackSettings({ development: true }));
   browserSync.init({
     proxy: {
       target: config.proxy,
@@ -53,44 +53,52 @@ const browserSyncTask = () => {
     },
     middleware: [
       webpackDevMiddleware(bundler, {
-        quiet: true,
-        path: webpackSettings.output.path,
-        publicPath: webpackSettings.output.publicPath,
+        logLevel: 'silent',
+        path: webpackSettings({ development: true }).output.path,
+        publicPath: webpackSettings({ development: true }).output.publicPath,
         stats: {
           colors: true,
         },
       }),
       webpackHotMiddleware(bundler, {
-        log: () => {},
+        log: false,
       }),
     ],
     files: [
       {
         match: [
-          `${config.srcPaths.views}**/*.{php,html,twig}`,
-          `${config.distPaths.css}**/*.css`,
+          `!${config.distPaths.views}parts/webpack-header.html`,
+          `!${config.distPaths.views}parts/site-scripts.html`,
+          `${config.distPaths.views}**/*.{php,html,twig}`,
           `${config.distPaths.images.base}**/*.{jpg,png,gif,svg}`,
         ],
-        fn: function(event, file) {
-          console.log(chalk`{green Changed ${file}}`);
-          console.log(chalk`{red Event ${event}}`);
-          if (event === 'change' && file.includes('.css')) {
-            browserSync.reload('*.css');
-          }
-          if (event === 'change' && (file.includes('.php') || file.includes('.html') || file.includes('.twig'))) {
+        fn(event, file) {
+          if (event === 'change' || event === 'add') {
             browserSync.reload();
           }
+        },
+      },
+      {
+        match: [`${config.distPaths.css}**/*.{css}`],
+        fn(event, file) {
+          if (event === 'change') {
+            browserSync.reload('*.css');
+          }
+        },
+        options: {
+          ignore: [
+            `${config.distPaths.views}parts/webpack-header.html`,
+            `${config.distPaths.views}parts/site-scripts.html`,
+          ],
         },
       },
     ],
   });
 };
 
-
 const browserSyncReload = () => {
   browserSync.reload();
 };
-
 
 gulp.task('browser-sync', browserSyncTask);
 gulp.task('bs-reload', browserSyncReload);

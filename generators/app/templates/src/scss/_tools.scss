@@ -35,20 +35,17 @@
 @import '______tools/tools.mixin.clearfix';
 @import '______tools/tools.mixin.filter';
 @import '______tools/tools.mixin.fluid-type';
-@import '______tools/tools.mixin.fontsize';
 @import '______tools/tools.mixin.vertical-align';
 @import '______tools/tools.mixin.visually-hidden';
-@import '______tools/tools.mixin.gutter';
-
 
 
 // Vendors
 // Include Media Breakpoint Mixin
 // URL: http://include-media.com/
-@import '../../node_modules/include-media/dist/include-media';
+@import '~include-media/dist/include-media';
 
 // Include Family.scss
 // URL: http://lukyvj.github.io/family.scss/
-@import '../../node_modules/family.scss/source/src/family';
+@import '~family.scss/source/src/family';
 
 /* stylelint-enable scss/at-import-no-partial-leading-underscore */

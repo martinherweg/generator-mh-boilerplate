@@ -193,9 +193,11 @@ module.exports = class extends Generator {
 
     const environmentFiles = require('./writeFiles/environment-files');
     const writePackageJson = require('./packageJson/write-package-json');
-
     filesEnvironmentProgress.total = environmentFiles.files.length;
 
+    environmentFiles.simpleCopy.forEach(file => {
+      this.fs.copy(this.templatePath(file.src), this.destinationPath(file.dest));
+    });
     environmentFiles.files.forEach(file => {
       this.fs.copyTpl(
         this.templatePath(file.src),
@@ -228,7 +230,7 @@ module.exports = class extends Generator {
       color: 'green',
     });
 
-    if (this.commands.git) {
+    if (this.commands.git && !this.options.skipInstall) {
       this.spawnCommandSync('git', ['init']);
       if (process.env.NODE_ENV === 'test') {
         return;
