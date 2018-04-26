@@ -1,5 +1,5 @@
 /**
- * Multiply your $line-height-base-px with a defined value to get an consitent Vertical Rhytm
+ * Multiply your $baseLineHeight with a defined value to get an consitent Vertical Rhytm
  *
  * @package  generator-lilly
  * @author   Martin Herweg <info@martinherweg.de>
@@ -23,7 +23,7 @@
 
 
 @function verticalrhythm($key) {
-  @return round(($line-height-base-px * $key) + 0px); /* stylelint-disable-line */
+  @return round(($base-line-height * $key) + 0px); /* stylelint-disable-line */
 }
 
 // Shorthand Version

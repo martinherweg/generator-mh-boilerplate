@@ -15,7 +15,7 @@
 
 
 .o-wrapper {
-  @include gutter(1);
+  @include fluid(space(2), space(3), padding-left padding-right);
 
   max-width: $app-max-width;
 
@@ -36,13 +36,13 @@
 
 
 .o-wrapper--small {
-  @include gutter(2);
+  @include fluid(space(1), space(2), padding-left padding-right);
 }
 
 .o-wrapper--large {
-  @include gutter(3);
+  @include fluid(space(3), space(4), padding-left padding-right);
 }
 
 .o-wrapper--huge {
-  @include gutter(4);
+  @include fluid(space(5), space(6), padding-left padding-right);
 }

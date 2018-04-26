@@ -12,51 +12,55 @@
 |--------------------------------------------------------------------------
 */
 
-
 /* stylelint-disable selector-class-pattern */
 
 h1,
+.h1,
 h2,
+.h2,
 h3,
+.h3,
 h4,
+.h4,
 h5,
-h6 {
+.h5,
+h6,
+.h6 {
+  @include fluid(space(1), space(2), margin-bottom);
   word-wrap: break-word;
   font-family: fontfamily('base');
   font-weight: map-getter($fontweights, 'extra-light');
-  line-height: 1.2;
+  line-height: $base-line-height;
 }
 
 h1,
 .h1 {
-  @include fluid(fontsize('ms4'), fontsize('ms6'));
+  @include ms-respond(font-size, 4);
 }
 
 h2,
 .h2 {
-  @include fluid(fontsize('ms3'), fontsize('ms5'));
+  @include ms-respond(font-size, 3);
 }
 
 h3,
 .h3 {
-  @include fluid(fontsize('ms2'), fontsize('ms4'));
+  @include ms-respond(font-size, 2);
 }
 
 h4,
 .h4 {
-  @include fluid(fontsize('ms1'), fontsize('ms3'));
+  @include ms-respond(font-size, 1);
 }
 
 h5,
 .h5 {
-  font-size: 18px;
-  text-transform: uppercase;
-  letter-spacing: 3px;
+  @include ms-respond(font-size, 0);
 }
 
 h6,
 .h6 {
-  @include fluid(fontsize('ms-1'), fontsize('ms0'));
+  @include ms-respond(font-size, -1);
 }
 
 /* stylelint-enable selector-class-pattern */

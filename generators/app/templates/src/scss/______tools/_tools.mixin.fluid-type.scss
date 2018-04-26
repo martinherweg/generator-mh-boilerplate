@@ -24,7 +24,7 @@
   @return is-number($value) and index('px', unit($value)) != null;
 }
 
-@mixin fluid($min-value, $max-value, $properties: font-size, $min-vw: $ms-width-min, $max-vw: $ms-width-max) {
+@mixin fluid($min-value, $max-value, $properties: font-size, $min-vw: $breakpoint-xs, $max-vw: $breakpoint-xl) {
   // Check If Value is PX
   @if is-px($min-value) {
     $min-value: rem-calc($min-value, 16px);

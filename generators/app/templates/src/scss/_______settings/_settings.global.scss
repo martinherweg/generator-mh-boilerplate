@@ -15,10 +15,7 @@
 
 /* stylelint-disable scss/dollar-variable-colon-space-after */
 
-$app-max-width:            1140px;
-$app-column-width:          120px; // How wide is one Column
-$app-gutter-width:          16px;  // How much ist the Gutter on each Side
-$app-flexbox:              true;  // Set to false to use floating grid (_objects.grid.scss)
-$app-columns: 12;
+$app-max-width:            1440px;
+$app-gutter-width:          8px;  // How much ist the Gutter on each Side
 
 /* stylelint-enable scss/dollar-variable-colon-space-after */

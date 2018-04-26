@@ -21,7 +21,7 @@
 
 .c-input,
 .c-input:not([type='submit']) {
-  @include fontsize('ms0');
+  @include ms-respond(font-size, 0);
   appearance: none;
   display: inline-block;
 

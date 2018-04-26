@@ -19,7 +19,7 @@ $breakpoint-xs:     480px;
 $breakpoint-s:      667px;
 $breakpoint-m:      1024px;
 $breakpoint-l:      1280px;
-$breakpoint-xl:     1680px;
+$breakpoint-xl:     $app-max-width;
 
 $app-breakpoints: (
   '0':      $breakpoint-0,
