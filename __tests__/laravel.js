@@ -9,7 +9,7 @@ const commandExists = require('command-exists');
 const run = () => helpers.run(path.join(__dirname, '../generators/app'));
 const { configPaths } = require('../generators/app/packageJson/paths/_distPaths');
 
-describe('generator-lilly:app', () => {
+describe('Using Laravel Option', () => {
   beforeAll(() => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000; // eslint-disable-line
     return run().withPrompts({ projectUsage: 'laravel', laravelInstall: false });

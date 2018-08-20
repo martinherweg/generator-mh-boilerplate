@@ -11,7 +11,7 @@ const run = () => helpers.run(path.join(__dirname, '../generators/app'));
 
 /* eslint-disable new-cap, no-multi-str, no-template-curly-in-string */
 
-describe('generator-lilly:app', () => {
+describe('Craft 3 Option', () => {
   beforeAll(() => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000; // eslint-disable-line
     return run().withPrompts({ projectUsage: 'craft3' });

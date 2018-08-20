@@ -37,7 +37,8 @@ describe('generator-lilly:app', () => {
     assetsPath = rootFolder + '/' + configPaths.craft.base + '/assets';
 
     webpackConfig = await import(rootFolder + '/webpack/webpack.config.babel.js'); //
-    webpackConfig = webpackConfig({ production: true });
+
+    webpackConfig = webpackConfig.default({ production: true });
     // eslint-disable-line
     webpackConfig.entry.testApp = path.resolve(__dirname, '__mocks__/testapp.js');
     const webpack = require(rootFolder + '/node_modules/webpack');

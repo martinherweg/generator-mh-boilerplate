@@ -1,5 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Using Vue Option adds vue instance to app.js 1`] = `
+"
+new Vue({
+  el: '#app',
+  render: createElement => createElement(App),
+  
+});
+    "
+`;
+
 exports[`Vue Project Usage adds VueX and Vue Router to Vue instance to app.js 1`] = `
 "
 new Vue({

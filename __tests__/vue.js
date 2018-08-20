@@ -18,7 +18,7 @@ const runwithVue = (plugins = []) => {
 
 const run = () => helpers.run(path.join(__dirname, '../generators/app'));
 
-describe('generator-lilly:app', () => {
+describe('Using Vue Option', () => {
   beforeAll(() => {
     return runwithVue();
   });
