@@ -1,49 +1,55 @@
 {
   "name": "generator-lilly",
   "version": "0.0.0",
-  "description":
-    "Personal boilerplate for Martin Herweg, Configurable for Laravel, Craft CMS and Vue",
+  "description": "Personal boilerplate for Martin Herweg, Configurable for Laravel, Craft CMS and Vue",
   "homepage": "https://github.com/martinherweg/lilly",
   "author": {
     "name": "Martin Herweg",
     "email": "info@martinherweg.de",
     "url": "https://martinherweg.de"
   },
-  "files": ["generators"],
+  "files": [
+    "generators"
+  ],
   "main": "generators/index.js",
-  "keywords": ["craft", "", "yeoman-generator"],
+  "keywords": [
+    "craft",
+    "",
+    "yeoman-generator"
+  ],
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.44",
-    "@babel/preset-env": "^7.0.0-beta.44",
+    "@babel/core": "^7.0.0-rc.1",
+    "@babel/preset-env": "^7.0.0-rc.1",
     "babel-core": "^7.0.0-0",
-    "babel-jest": "^22.4.3",
-    "babel-plugin-dynamic-import-node": "^1.2.0",
-    "dotenv": "^5.0.1",
-    "download": "^6.2.5",
-    "ejs": "^2.5.9",
-    "eslint": "^4.19.1",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-config-xo": "^0.20.1",
-    "eslint-plugin-prettier": "^2.6.0",
+    "babel-jest": "^23.4.2",
+    "babel-plugin-dynamic-import-node": "^2.0.0",
+    "deep-extend": "^0.6.0",
+    "dotenv": "^6.0.0",
+    "download": "^7.1.0",
+    "ejs": "^2.6.1",
+    "eslint": "^5.4.0",
+    "eslint-config-prettier": "^3.0.1",
+    "eslint-config-xo": "^0.24.1",
+    "eslint-plugin-prettier": "^2.6.2",
     "husky": "^0.14.3",
-    "jest": "^22.0.6",
-    "lint-staged": "^6.1.1",
-    "nsp": "^2.8.0",
-    "prettier": "^1.11.1",
-    "regenerator-runtime": "^0.11.1",
-    "yeoman-assert": "^3.1.0",
-    "yeoman-test": "^1.7.0"
+    "jest": "^23.5.0",
+    "lint-staged": "^7.2.2",
+    "nsp": "^3.2.1",
+    "prettier": "^1.14.2",
+    "regenerator-runtime": "^0.12.1",
+    "yeoman-assert": "^3.1.1",
+    "yeoman-test": "^1.9.1"
   },
   "engines": {
     "npm": ">= 4.0.0"
   },
   "dependencies": {
-    "chalk": "^2.1.0",
-    "command-exists": "^1.2.6",
-    "fs-extra": "^5.0.0",
+    "chalk": "^2.4.1",
+    "command-exists": "^1.2.7",
+    "fs-extra": "^7.0.0",
     "progress": "^2.0.0",
-    "yeoman-generator": "^2.0.1",
-    "yosay": "^2.0.1"
+    "yeoman-generator": "^3.1.1",
+    "yosay": "^2.0.2"
   },
   "jest": {
     "testEnvironment": "node"
@@ -55,11 +61,20 @@
     "test": "jest"
   },
   "lint-staged": {
-    "*.js": ["eslint --fix", "git add"],
-    "*.json": ["prettier --write", "git add"]
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.json": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "eslintConfig": {
-    "extends": ["xo", "prettier"],
+    "extends": [
+      "xo",
+      "prettier"
+    ],
     "env": {
       "jest": true,
       "node": true
@@ -73,7 +88,9 @@
         }
       ]
     },
-    "plugins": ["prettier"]
+    "plugins": [
+      "prettier"
+    ]
   },
   "repository": "git@github.com:martinherweg/lilly.git",
   "license": "Apache-2.0"
