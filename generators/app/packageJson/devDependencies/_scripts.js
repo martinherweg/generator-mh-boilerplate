@@ -9,10 +9,10 @@
 const extend = require('deep-extend');
 
 exports.scriptsDependencies = {
-  'fs-extra': '^5.0.0',
+  'fs-extra': '^7.0.0',
   'mem-fs': '^1.1.3',
-  'mem-fs-editor': '^4.0.0',
-  inquirer: '^5.0.1',
+  'mem-fs-editor': '^5.1.0',
+  inquirer: '^6.1.0',
 };
 
 exports.packageJsonScriptsDependencies = (files = {}) => {

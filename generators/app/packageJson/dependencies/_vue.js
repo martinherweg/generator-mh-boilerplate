@@ -9,14 +9,14 @@
 const extend = require('deep-extend');
 
 exports.dependencies = {
-  vue: '^2.5.16',
+  vue: '^2.5.17',
 };
 
 exports.devDependencies = {
-  'eslint-plugin-vue': '^4.5.0',
-  'vue-loader': '^15.0.0-rc.2',
-  'vue-style-loader': '^4.1.0',
-  'vue-template-compiler': '^2.5.16',
+  'eslint-plugin-vue': '^4.7.1',
+  'vue-loader': '^15.4.0',
+  'vue-style-loader': '^4.1.2',
+  'vue-template-compiler': '^2.5.17',
 };
 
 exports.vueXDependencies = {
