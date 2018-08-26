@@ -67,15 +67,14 @@ module.exports = class extends Generator {
   async configuring() {
     this.logComment({ message: 'Install Stuff' });
     // Install Craft or Laravel and configure their Folders for our needs.
-    if (this.props.projectUsage === 'craft' && this.props.craftInstall) {
+    if (this.props.projectUsage === 'craft' && !this.options.skipInstall) {
       try {
         await this.craft2().download(this);
       } catch (e) {
         console.error(e);
       }
     }
-
-    if (this.props.projectUsage === 'craft3') {
+    if (this.props.projectUsage === 'craft3' && !this.options.skipInstall) {
       try {
         await this.craft3().download(this);
       } catch (e) {
@@ -92,7 +91,7 @@ module.exports = class extends Generator {
       }
     }
 
-    if (this.props.projectUsage === 'laravel' && this.props.laravelInstall) {
+    if (this.props.projectUsage === 'laravel' && !this.options.skipInstall) {
       try {
         await this.laravel().download(this);
       } catch (e) {

@@ -7,8 +7,9 @@ const fs = require('fs-extra');
 const { flatten } = require('lodash');
 
 const { configPaths } = require('../generators/app/packageJson/paths/_distPaths');
+const { srcPaths } = require('../generators/app/packageJson/paths/_srcPaths');
 
-describe('generator-lilly:app', () => {
+describe('testing basic webpack functionality', () => {
   const testFolder = path.resolve(__dirname, '../../tmp/test/');
   let rootFolder;
   let webpackConfig;
@@ -25,7 +26,7 @@ describe('generator-lilly:app', () => {
         projectUsage: 'craft',
         craftInstall: false,
         projectFramework: 'vue',
-        projectVuePlugin: ['vuerouter', 'vuex']
+        projectVuePlugin: ['vuerouter', 'vuex'],
       })
       .withOptions({ skipInstall: true });
     const mocks = path.resolve(__dirname, '__mocks__');
@@ -111,10 +112,6 @@ describe('generator-lilly:app', () => {
     assert.file(filtered);
   });
 
-  it('can compile Vue SFC', () => {
-
-  });
-
   it('moves fonts', () => {
     if (!webpackStats) return undefined;
     const { assets } = webpackStats;
@@ -135,5 +132,326 @@ describe('generator-lilly:app', () => {
     } else {
       assert.file('foo.js');
     }
+  });
+});
+
+describe('craft2 | testing file generation', () => {
+  const testFolder = path.resolve(__dirname, '../../tmp/test/');
+  let rootFolder;
+  let webpackConfig;
+  let webpackStats;
+  let webpackOutputPath;
+  let assetsPath;
+
+  beforeAll(async () => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000;
+    await helpers
+      .run(path.join(__dirname, '../generators/app'))
+      .cd(testFolder)
+      .withPrompts({
+        projectUsage: 'craft',
+        craftInstall: false,
+        projectFramework: 'vue',
+        projectVuePlugin: ['vuerouter', 'vuex'],
+      })
+      .withOptions({ skipInstall: true });
+    const mocks = path.resolve(__dirname, '__mocks__');
+
+    fs.copySync(mocks + '/images/', testFolder + '/src/images/');
+    fs.copySync(mocks + '/fonts/', testFolder + '/src/fonts/');
+
+    rootFolder = testFolder;
+    assetsPath = rootFolder + '/' + configPaths.craft.base + '/assets';
+
+    webpackConfig = await import(rootFolder + '/webpack/webpack.config.babel.js'); //
+
+    webpackConfig = webpackConfig.default({ production: true });
+    // eslint-disable-line
+    webpackConfig.entry.testApp = path.resolve(__dirname, '__mocks__/testapp.js');
+    const webpack = require(rootFolder + '/node_modules/webpack');
+    return new Promise((resolve, reject) => {
+      webpack(webpackConfig, (err, stats) => {
+        if (err) {
+          console.error(err.stack || err);
+          if (err.details) {
+            console.error(err.details);
+          }
+          return reject('Error');
+        }
+
+        const info = stats.toJson();
+
+        if (stats.hasErrors()) {
+          console.error(info.errors);
+          reject('error');
+        }
+
+        if (stats.hasWarnings()) {
+          console.warn(info.warnings);
+          reject('error');
+        }
+        webpackOutputPath = stats.compilation.outputOptions.path;
+        webpackStats = stats.toJson();
+        return resolve(webpackStats);
+      });
+    });
+  });
+
+  it('generates header and scripts file', () => {
+    assert.file(`${rootFolder}/${configPaths.craft.views}_webpack/webpack-header.html`);
+    assert.file(`${rootFolder}/${configPaths.craft.views}_webpack/webpack-scripts.html`);
+  });
+
+  it('references to webpack files', () => {
+    assert.fileContent(
+      `${rootFolder}/${srcPaths.defaults.views}layout/_layout.html`,
+      "{% include '_webpack/webpack-scripts' %}",
+    );
+    assert.fileContent(
+      `${rootFolder}/${srcPaths.defaults.views}parts/site-header.html`,
+      "{% include '_webpack/webpack-header' %}",
+    );
+  });
+
+  it('has webpack generated assets linked', () => {
+    if (!webpackStats) return undefined;
+
+    const { assets } = webpackStats;
+    const jsFiles = assets
+      .filter(asset => asset.name.includes('js/'))
+      .filter(asset => !asset.name.includes('.map'))
+      .map(file => file.name);
+    const cssFiles = assets
+      .filter(asset => asset.name.includes('css/'))
+      .filter(asset => !asset.name.includes('.map'))
+      .map(file => file.name);
+
+    jsFiles.forEach(file => {
+      assert.fileContent(
+        `${rootFolder}/${configPaths.craft.views}_webpack/webpack-scripts.html`,
+        `<script src="/assets/${file}"></script>`,
+      );
+    });
+
+    cssFiles.forEach(file => {
+      assert.fileContent(
+        `${rootFolder}/${configPaths.craft.views}_webpack/webpack-header.html`,
+        `<link href="/assets/${file}" rel="stylesheet">`,
+      );
+    });
+  });
+});
+
+describe('craft3 | testing file generation', () => {
+  const testFolder = path.resolve(__dirname, '../../tmp/test/');
+  let rootFolder;
+  let webpackConfig;
+  let webpackStats;
+  let webpackOutputPath;
+  let assetsPath;
+
+  beforeAll(async () => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000;
+    await helpers
+      .run(path.join(__dirname, '../generators/app'))
+      .cd(testFolder)
+      .withPrompts({
+        projectUsage: 'craft3',
+        craftInstall: false,
+        projectFramework: 'vue',
+        projectVuePlugin: ['vuerouter', 'vuex'],
+      })
+      .withOptions({ skipInstall: true });
+    const mocks = path.resolve(__dirname, '__mocks__');
+
+    fs.copySync(mocks + '/images/', testFolder + '/src/images/');
+    fs.copySync(mocks + '/fonts/', testFolder + '/src/fonts/');
+
+    rootFolder = testFolder;
+    assetsPath = rootFolder + '/' + configPaths.craft3.base + '/assets';
+
+    webpackConfig = await import(rootFolder + '/webpack/webpack.config.babel.js'); //
+
+    webpackConfig = webpackConfig.default({ production: true });
+    // eslint-disable-line
+    webpackConfig.entry.testApp = path.resolve(__dirname, '__mocks__/testapp.js');
+    const webpack = require(rootFolder + '/node_modules/webpack');
+    return new Promise((resolve, reject) => {
+      webpack(webpackConfig, (err, stats) => {
+        if (err) {
+          console.error(err.stack || err);
+          if (err.details) {
+            console.error(err.details);
+          }
+          return reject('Error');
+        }
+
+        const info = stats.toJson();
+
+        if (stats.hasErrors()) {
+          console.error(info.errors);
+          reject('error');
+        }
+
+        if (stats.hasWarnings()) {
+          console.warn(info.warnings);
+          reject('error');
+        }
+        webpackOutputPath = stats.compilation.outputOptions.path;
+        webpackStats = stats.toJson();
+        return resolve(webpackStats);
+      });
+    });
+  });
+
+  it('generates header and scripts file', () => {
+    assert.file(`${rootFolder}/${configPaths.craft3.views}_webpack/webpack-header.html`);
+    assert.file(`${rootFolder}/${configPaths.craft3.views}_webpack/webpack-scripts.html`);
+  });
+
+  it('references to webpack files', () => {
+    assert.fileContent(
+      `${rootFolder}/${srcPaths.defaults.views}layout/_layout.html`,
+      "{% include '_webpack/webpack-scripts' %}",
+    );
+    assert.fileContent(
+      `${rootFolder}/${srcPaths.defaults.views}parts/site-header.html`,
+      "{% include '_webpack/webpack-header' %}",
+    );
+  });
+
+  it('has webpack generated assets linked', () => {
+    if (!webpackStats) return undefined;
+
+    const { assets } = webpackStats;
+    const jsFiles = assets
+      .filter(asset => asset.name.includes('js/'))
+      .filter(asset => !asset.name.includes('.map'))
+      .map(file => file.name);
+    const cssFiles = assets
+      .filter(asset => asset.name.includes('css/'))
+      .filter(asset => !asset.name.includes('.map'))
+      .map(file => file.name);
+
+    jsFiles.forEach(file => {
+      assert.fileContent(
+        `${rootFolder}/${configPaths.craft3.views}_webpack/webpack-scripts.html`,
+        `<script src="/assets/${file}"></script>`,
+      );
+    });
+
+    cssFiles.forEach(file => {
+      assert.fileContent(
+        `${rootFolder}/${configPaths.craft.views}_webpack/webpack-header.html`,
+        `<link href="/assets/${file}" rel="stylesheet">`,
+      );
+    });
+  });
+});
+
+describe('Laravel | testing file generation', () => {
+  const testFolder = path.resolve(__dirname, '../../tmp/test/');
+  let rootFolder;
+  let webpackConfig;
+  let webpackStats;
+  let webpackOutputPath;
+  let assetsPath;
+
+  beforeAll(async () => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000;
+    await helpers
+      .run(path.join(__dirname, '../generators/app'))
+      .cd(testFolder)
+      .withPrompts({
+        projectUsage: 'laravel',
+        laravelInstall: false,
+        projectFramework: 'vue',
+        projectVuePlugin: ['vuerouter', 'vuex'],
+      })
+      .withOptions({ skipInstall: true });
+    const mocks = path.resolve(__dirname, '__mocks__');
+
+    fs.copySync(mocks + '/images/', testFolder + '/src/images/');
+    fs.copySync(mocks + '/fonts/', testFolder + '/src/fonts/');
+
+    rootFolder = testFolder;
+    assetsPath = rootFolder + '/' + configPaths.laravel.base + '/assets';
+
+    webpackConfig = await import(rootFolder + '/webpack/webpack.config.babel.js'); //
+
+    webpackConfig = webpackConfig.default({ production: true });
+    // eslint-disable-line
+    webpackConfig.entry.testApp = path.resolve(__dirname, '__mocks__/testapp.js');
+    const webpack = require(rootFolder + '/node_modules/webpack');
+    return new Promise((resolve, reject) => {
+      webpack(webpackConfig, (err, stats) => {
+        if (err) {
+          console.error(err.stack || err);
+          if (err.details) {
+            console.error(err.details);
+          }
+          return reject('Error');
+        }
+
+        const info = stats.toJson();
+
+        if (stats.hasErrors()) {
+          console.error(info.errors);
+          reject('error');
+        }
+
+        if (stats.hasWarnings()) {
+          console.warn(info.warnings);
+          reject('error');
+        }
+        webpackOutputPath = stats.compilation.outputOptions.path;
+        webpackStats = stats.toJson();
+        return resolve(webpackStats);
+      });
+    });
+  });
+
+  it('generates header and scripts file', () => {
+    assert.file(`${rootFolder}/${configPaths.laravel.views}_webpack/webpack-header.blade.php`);
+    assert.file(`${rootFolder}/${configPaths.laravel.views}_webpack/webpack-scripts.blade.php`);
+  });
+
+  it('references to webpack files', () => {
+    assert.fileContent(
+      `${rootFolder}/${srcPaths.defaults.views}_layout/_layout.blade.php`,
+      "@include('_webpack.webpack-scripts')",
+    );
+    assert.fileContent(
+      `${rootFolder}/${srcPaths.defaults.views}_parts/site-header.blade.php`,
+      "@include('_webpack.webpack-header')",
+    );
+  });
+
+  it('has webpack generated assets linked', () => {
+    if (!webpackStats) return undefined;
+
+    const { assets } = webpackStats;
+    const jsFiles = assets
+      .filter(asset => asset.name.includes('js/'))
+      .filter(asset => !asset.name.includes('.map'))
+      .map(file => file.name);
+    const cssFiles = assets
+      .filter(asset => asset.name.includes('css/'))
+      .filter(asset => !asset.name.includes('.map'))
+      .map(file => file.name);
+
+    jsFiles.forEach(file => {
+      assert.fileContent(
+        `${rootFolder}/${configPaths.laravel.views}_webpack/webpack-scripts.blade.php`,
+        `<script src="/assets/${file}"></script>`,
+      );
+    });
+
+    cssFiles.forEach(file => {
+      assert.fileContent(
+        `${rootFolder}/${configPaths.laravel.views}_webpack/webpack-header.blade.php`,
+        `<link href="/assets/${file}" rel="stylesheet">`,
+      );
+    });
   });
 });

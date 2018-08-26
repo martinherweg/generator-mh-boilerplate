@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Craft 2 Option adds webpack content to scripts and header 1`] = `
+"<% for (var chunk in htmlWebpackPlugin.files.chunks) { if (!chunk.match(/font/)) { %>
+<script src=\\"<%= htmlWebpackPlugin.files.chunks[chunk].entry %>\\"></script>
+<% }} %>
+"
+`;
+
+exports[`Craft 2 Option adds webpack content to scripts and header 2`] = `
+"<% for (var css in htmlWebpackPlugin.files.css) { %>
+  <link href=\\"<%= htmlWebpackPlugin.files.css[css] %>\\" rel=\\"stylesheet\\">
+<% } %>
+"
+`;

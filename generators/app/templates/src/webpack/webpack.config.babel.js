@@ -119,6 +119,7 @@ module.exports = (env = { development: true }) => {
     entry: removeEmpty(entry_points),
     output: {
       path: ASSETS_ROOT,
+      publicPath: '/assets/',
       filename: ifDevelopment('js/[name].js', 'js/[name].[chunkhash].js'),
     },
     performance: {
@@ -262,6 +263,12 @@ module.exports = (env = { development: true }) => {
         test: /^(?!.+(?:hot-update.(js|json))).+$/,
       }),
       new Stylish(),
+    ifProduction(new BundleAnalyzerPlugin({
+      analyzerMode: 'disabled',
+      generateStatsFile: true,
+      statsFilename: `${BASE_PATH}/webpack/stats.json`,
+      logLevel: 'silent',
+    })),
     ])
   };
 };

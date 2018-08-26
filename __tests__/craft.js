@@ -1,5 +1,6 @@
 'use strict';
 const path = require('path');
+const fs = require('fs');
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
 
@@ -10,10 +11,14 @@ const run = () => helpers.run(path.join(__dirname, '../generators/app'));
 
 describe('Craft 2 Option', () => {
   beforeAll(async () => {
-    await run().withPrompts({
-      projectUsage: 'craft',
-      craftInstall: false,
-    });
+    await run()
+      .withPrompts({
+        projectUsage: 'craft',
+        craftInstall: false,
+      })
+      .withOptions({
+        skipInstall: true,
+      });
   });
 
   it('fills package.json with project type craft', () => {
@@ -21,7 +26,6 @@ describe('Craft 2 Option', () => {
       projectType: 'craft',
     });
   });
-
   it('adds downloadPlugin Script to scripts Folder', () => {
     assert.file(['scripts/downloadPlugin.js']);
   });
@@ -49,8 +53,8 @@ describe('Craft 2 Option', () => {
       devDependencies: {
         'fs-extra': '^5.0.0',
         'mem-fs': '^1.1.3',
-        'mem-fs-editor': '^4.0.0',
-        inquirer: '^5.0.1',
+        'mem-fs-editor': '^5.1.0',
+        inquirer: '^6.1.0',
         'deep-extend': '^0.5.0',
         download: '^6.2.5',
         progress: '^2.0.0',
@@ -83,24 +87,17 @@ describe('Craft 2 Option', () => {
   });
 
   it('adds webpack content to scripts and header', () => {
-    assert.fileContent(
-      'src/views/_webpack/webpack-scripts.html',
-      `<% for (var chunk in htmlWebpackPlugin.files.chunks) { if (!chunk.match(/font/)) { %>
-<script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
-<% }} %>
-`,
-    );
-    assert.fileContent(
-      'src/views/_webpack/webpack-header.html',
-      `<% for (var css in htmlWebpackPlugin.files.css) { %>
-  <link href="<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
-<% } %>
-<% for (var chunk of webpack.chunks) {
-for (var file of chunk.files) {
-if (file.match(/\\.(js|css)$/) && !file.match(/cp/)) { %>
-<link rel="<%= chunk.initial?'preload':'prefetch' %>" href="<%= htmlWebpackPlugin.files.publicPath + file %>" as="<%= file.match(/\\.css$/)?'style':'script' %>"><% }}} %>
-`,
-    );
+    const footerContent = fs.readFileSync('src/views/_webpack/webpack-scripts.html', {
+      encoding: 'utf8',
+    });
+
+    expect(footerContent).toMatchSnapshot();
+
+    const headerContent = fs.readFileSync('src/views/_webpack/webpack-header.html', {
+      encoding: 'utf8',
+    });
+
+    expect(headerContent).toMatchSnapshot();
   });
 
   it('adds Craft chunks to webpack config', () => {

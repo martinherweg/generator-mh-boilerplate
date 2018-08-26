@@ -14,7 +14,9 @@ const run = () => helpers.run(path.join(__dirname, '../generators/app'));
 describe('Craft 3 Option', () => {
   beforeAll(() => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000; // eslint-disable-line
-    return run().withPrompts({ projectUsage: 'craft3' });
+    return run()
+      .withPrompts({ projectUsage: 'craft3', craftInstall: true })
+      .withOptions({ skipInstall: false });
   });
 
   it('installs craft', () => {

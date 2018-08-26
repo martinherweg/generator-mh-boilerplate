@@ -19,108 +19,94 @@ const craftFolders = {
     files: [
       {
         src: 'templates/',
-        dest: 'src/views/'
+        dest: 'src/views/',
       },
-      {
-        src: 'scripts/downloadPlugin.js',
-        dest: 'scripts/downloadPlugin.js'
-      }
     ],
-  }
+  },
 };
 
 const writingCraft = () => {
   return {
     download: context => {
-      context.spawnCommandSync('composer', [
-        'create-project',
-        'craftcms/craft',
-        'dist',
-        '-s',
-        'RC'
-      ]);
+      context.spawnCommandSync('composer', ['create-project', 'craftcms/craft', 'dist']);
 
       commentLog({
-        message: 'Downloaded Craft now initial Setup.'
+        message: 'Downloaded Craft now initial Setup.',
       });
 
       if (process.env.NODE_ENV === 'test') {
-        context.spawnCommandSync(
-          context.destinationPath() + '/dist/craft',
-          ['setup/security-key']
-        );
+        context.spawnCommandSync(context.destinationPath() + '/dist/craft', ['setup/security-key']);
 
-        context.spawnCommandSync(
-          context.destinationPath() + '/dist/craft',
-          ['setup/db-creds', '--interactive=0', '--database=testdb', '--user=tester', '--password=user']
-        );
+        context.spawnCommandSync(context.destinationPath() + '/dist/craft', [
+          'setup/db-creds',
+          '--interactive=0',
+          '--database=testdb',
+          '--user=tester',
+          '--password=user',
+        ]);
 
-        return context.spawnCommandSync(
-          context.destinationPath() + '/dist/craft',
-          ['install', '--interactive=0', '--email=max@mustermann.co', '--username=max', '--password=mustermann', '--siteName=CraftTest', '--siteUrl=http://craft.test']
-        );
+        return context.spawnCommandSync(context.destinationPath() + '/dist/craft', [
+          'install',
+          '--interactive=0',
+          '--email=max@mustermann.co',
+          '--username=max',
+          '--password=mustermann',
+          '--siteName=CraftTest',
+          '--siteUrl=http://craft.test',
+        ]);
       }
 
-      return context.spawnCommandSync(
-        context.destinationPath() + '/dist/craft',
-        ['setup']
-      );
+      return context.spawnCommandSync(context.destinationPath() + '/dist/craft', ['setup']);
     },
     writing: context => {
       return new Promise(resolve => {
         // load dotenv file
-        const {parsed: DOTENV} = dotenv.config({
-          path: context.destinationPath() + '/dist/.env'
+        const { parsed: DOTENV } = dotenv.config({
+          path: context.destinationPath() + '/dist/.env',
         });
 
         // Copy our Folders
         craftFolders.SRC.files.forEach(file => {
           context.fs.copy(
-            context.templatePath(`craft/${file.src}`),
-            context.destinationPath(file.dest)
+            context.templatePath(`craft3/${file.src}`),
+            context.destinationPath(file.dest),
           );
         });
 
         // install nystudio environment and scripts via compposer
         const spawnCommandOptions = {
-          cwd: context.destinationPath() + '/dist/'
+          cwd: context.destinationPath() + '/dist/',
         };
         context.spawnCommandSync(
           'composer',
-          [
-            'require',
-            'nystudio107/craft3-multi-environment',
-            '--prefer-stable'
-          ],
-          spawnCommandOptions
+          ['require', 'nystudio107/craft3-multi-environment', '--prefer-stable'],
+          spawnCommandOptions,
         );
         context.spawnCommandSync(
           'composer',
           ['require', 'nystudio107/craft-scripts'],
-          spawnCommandOptions
+          spawnCommandOptions,
         );
 
         fs.symlinkSync(
-          context.destinationPath(
-            'dist/vendor/nystudio107/craft-scripts/scripts'
-          ),
-          context.destinationPath('dist/scripts')
+          context.destinationPath('dist/vendor/nystudio107/craft-scripts/scripts'),
+          context.destinationPath('dist/scripts'),
         );
 
         // nystudio multi nev
 
         const copyOptions = {
-          overwrite: true
+          overwrite: true,
         };
 
         // overwrite everything in .env.php with data from craft setup
         let ENV_FILE = fs.readFileSync(
           context.destinationPath(
-            'dist/vendor/nystudio107/craft3-multi-environment/example.env.php'
+            'dist/vendor/nystudio107/craft3-multi-environment/example.env.php',
           ),
           {
-            encoding: 'utf8'
-          }
+            encoding: 'utf8',
+          },
         );
 
         Object.keys(DOTENV).forEach(key => {
@@ -136,16 +122,16 @@ const writingCraft = () => {
         });
 
         fs.writeFileSync(context.destinationPath('dist/.env.php'), ENV_FILE, {
-          encoding: 'utf8'
+          encoding: 'utf8',
         });
 
         let ENV_SCRIPTS = fs.readFileSync(
           context.destinationPath(
-            'dist/vendor/nystudio107/craft-scripts/scripts/craft3-example.env.sh'
+            'dist/vendor/nystudio107/craft-scripts/scripts/craft3-example.env.sh',
           ),
           {
-            encoding: 'utf8'
-          }
+            encoding: 'utf8',
+          },
         );
 
         DOTENV.ROOT_PATH = process.cwd() + '/';
@@ -163,73 +149,64 @@ const writingCraft = () => {
           const subst = `${new_key}="${DOTENV[key]}"`;
           ENV_SCRIPTS = ENV_SCRIPTS.replace(regex, subst).replace(
             /GLOBAL_DB_TABLE_PREFIX=""/g,
-            `GLOBAL_DB_TABLE_PREFIX="${DOTENV['DB_TABLE_PREFIX']}"`
+            `GLOBAL_DB_TABLE_PREFIX="${DOTENV['DB_TABLE_PREFIX']}"`,
           );
         });
 
         fs.writeFileSync(context.destinationPath('dist/.env.sh'), ENV_SCRIPTS, {
-          encoding: 'utf8'
+          encoding: 'utf8',
         });
 
         fs.symlinkSync(
           context.destinationPath('dist/.env.sh'),
-          context.destinationPath('dist/scripts/.env.sh')
+          context.destinationPath('dist/scripts/.env.sh'),
         );
         // END overwrite everything in .env.php with data from craft setup
 
         fs.copy(
-          context.destinationPath(
-            'dist/vendor/nystudio107/craft3-multi-environment/web/index.php'
-          ),
+          context.destinationPath('dist/vendor/nystudio107/craft3-multi-environment/web/index.php'),
           context.destinationPath('dist/web/index.php'),
-          copyOptions
+          copyOptions,
         );
 
         fs.copy(
-          context.destinationPath(
-            'dist/vendor/nystudio107/craft3-multi-environment/config/db.php'
-          ),
+          context.destinationPath('dist/vendor/nystudio107/craft3-multi-environment/config/db.php'),
           context.destinationPath('dist/config/db.php'),
-          copyOptions
+          copyOptions,
         );
 
         fs.copy(
           context.destinationPath(
-            'dist/vendor/nystudio107/craft3-multi-environment/config/general.php'
+            'dist/vendor/nystudio107/craft3-multi-environment/config/general.php',
           ),
           context.destinationPath('dist/config/general.php'),
-          copyOptions
+          copyOptions,
         );
 
         fs.copy(
           context.destinationPath(
-            'dist/vendor/nystudio107/craft3-multi-environment/config/volumes.php'
+            'dist/vendor/nystudio107/craft3-multi-environment/config/volumes.php',
           ),
           context.destinationPath('dist/config/volumes.php'),
-          copyOptions
+          copyOptions,
         );
 
         // END nystudio multi nev
 
-        const craftIgnore = fs.readFileSync(
-          context.templatePath('craft3/_gitignore'),
-          {
-            encoding: 'UTF-8'
-          }
-        );
+        const craftIgnore = fs.readFileSync(context.templatePath('craft3/_gitignore'), {
+          encoding: 'UTF-8',
+        });
 
         const _ignoreFile = ejs.render(craftIgnore, {
           projectUsage: context.props.projectUsage,
-          craftEnv: context.props.craftEnv
+          craftEnv: context.props.craftEnv,
         });
 
         // copy .env.example.php to .env.php
-        if (
-          context.fs.exists(context.destinationPath('dist/.env.example.php'))
-        ) {
+        if (context.fs.exists(context.destinationPath('dist/.env.example.php'))) {
           context.fs.copy(
             context.destinationPath('dist/.env.example.php'),
-            context.destinationPath('dist/.env.php')
+            context.destinationPath('dist/.env.php'),
           );
         }
 
@@ -237,7 +214,7 @@ const writingCraft = () => {
 
         resolve();
       });
-    }
+    },
   };
 };
 
