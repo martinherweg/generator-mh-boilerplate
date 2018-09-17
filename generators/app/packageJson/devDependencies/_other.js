@@ -8,12 +8,7 @@
 'use strict';
 const extend = require('deep-extend');
 
-exports.otherDependencies = {
-  'browser-sync': '^2.24.6',
-  chalk: '^2.4.1',
-  del: '^3.0.0',
-  path: '^0.12.7',
-};
+exports.otherDependencies = require('./_otherDependencies');
 
 exports.packageJsonOther = (files = {}) => {
   extend(files.pkg, {

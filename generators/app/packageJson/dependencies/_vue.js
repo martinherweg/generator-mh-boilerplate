@@ -7,25 +7,15 @@
 
 'use strict';
 const extend = require('deep-extend');
+const vueDependencies = require('./_vueDependencies');
 
-exports.dependencies = {
-  vue: '^2.5.17',
-};
+exports.dependencies = vueDependencies.dependencies;
 
-exports.devDependencies = {
-  'eslint-plugin-vue': '^4.7.1',
-  'vue-loader': '^15.4.0',
-  'vue-style-loader': '^4.1.2',
-  'vue-template-compiler': '^2.5.17',
-};
+exports.devDependencies = vueDependencies.devDependencies;
 
-exports.vueXDependencies = {
-  vuex: '^3.0.1',
-};
+exports.vueXDependencies = vueDependencies.VueX;
 
-exports.routerDependencies = {
-  'vue-router': '^3.0.1',
-};
+exports.routerDependencies = vueDependencies.VueRouter;
 
 exports.packageJsonVue = (files = {}, context) => {
   extend(files.pkg, {
@@ -58,9 +48,6 @@ exports.packageJsonVue = (files = {}, context) => {
   }
 
   extend(files.pkg, {
-    scripts: {
-      'module:vue': 'yarn module -- --vue=true',
-    },
     dependencies: exports.dependencies,
   });
 };
