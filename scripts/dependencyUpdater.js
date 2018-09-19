@@ -14,53 +14,64 @@ const compareVersions = (old, newVersion) => {
   return compareSemver(old, newVersion);
 };
 
-// Const updatePackage = async ({
-//   originalFile,
-//   packageName,
-//   packageOldVersion,
-//   packageNewVersion,
-// }) => {
-//   try {
-//     const answer = await inquirer.prompt([
-//       {
-//         type: 'confirm',
-//         name: 'update',
-//         message: `Do you want to update ${packageName} from ${packageOldVersion} to ${packageNewVersion}?`,
-//       },
-//     ]);
-//     console.log(answer);
-//     return answer;
-//   } catch (e) {
-//     return console.error(e);
-//   }
-// };
+const updatePackage = async ({
+  packageName,
+  packageVersion,
+  filename,
+  fileContent,
+  nestedObject = false,
+  nestedKey = '',
+}) => {
+  const result = await availablePackageVersion(packageName, true);
+  const latestVersion = result.versions[result.versions.length - 1];
+
+  if (compareVersions(packageVersion.replace('^', ''), latestVersion) === -1) {
+    await inquirer
+      .prompt([
+        {
+          type: 'confirm',
+          name: 'update',
+          message: `Do you want to update ${
+            result.name
+          } from ${packageVersion} to ${latestVersion} in ${path.basename(filename)}?`,
+        },
+      ])
+      .then(async ({ update }) => {
+        if (update) {
+          if (nestedObject) {
+            fileContent[nestedKey][packageName] = '^' + latestVersion;
+          } else {
+            fileContent[packageName] = '^' + latestVersion;
+          }
+
+          fs.writeFileSync(filename, JSON.stringify(fileContent, null, 2));
+        }
+      });
+  }
+};
 
 const run = async jsonFiles => {
   await forEachSeries(jsonFiles, async file => {
     const contents = require(path.resolve(file));
     await forEachSeries(Object.entries(contents), async ([key, value]) => {
       if (typeof value === 'string') {
-        const result = await availablePackageVersion(key, true);
-        const latestVersion = result.versions[result.versions.length - 1];
-
-        if (compareVersions(value.replace('^', ''), latestVersion) === -1) {
-          await inquirer
-            .prompt([
-              {
-                type: 'confirm',
-                name: 'update',
-                message: `Do you want to update ${
-                  result.name
-                } from ${value} to ${latestVersion} in ${path.basename(file)}?`,
-              },
-            ])
-            .then(async ({ update }) => {
-              if (update) {
-                contents[key] = '^' + latestVersion;
-                fs.writeFileSync(file, JSON.stringify(contents, null, 2));
-              }
-            });
-        }
+        await updatePackage({
+          packageName: key,
+          packageVersion: value,
+          filename: file,
+          fileContent: contents,
+        });
+      } else {
+        await forEachSeries(Object.entries(value), async ([nestedKey, nestedValue]) => {
+          await updatePackage({
+            packageName: nestedKey,
+            packageVersion: nestedValue,
+            filename: file,
+            fileContent: contents,
+            nestedObject: true,
+            nestedKey: key,
+          });
+        });
       }
     });
   });
