@@ -1,5 +1,20 @@
 #!/usr/bin/env node
 
+/**
+ * Update dependencies in this generator when new available
+ *
+ * @package  lilly
+ * @author   Martin Herweg <info@martinherweg.de>
+ */
+
+/*
+|---------------------------------------------------
+| dependencyUpdater.js
+|---------------------------------------------------
+*/
+
+const ora = require('ora');
+
 const path = require('path');
 const { forEachSeries } = require('p-iteration');
 const fs = require('fs-extra');
@@ -22,31 +37,66 @@ const updatePackage = async ({
   nestedObject = false,
   nestedKey = '',
 }) => {
-  const result = await availablePackageVersion(packageName, true);
-  const latestVersion = result.versions[result.versions.length - 1];
-
-  if (compareVersions(packageVersion.replace('^', ''), latestVersion) === -1) {
-    await inquirer
-      .prompt([
-        {
-          type: 'confirm',
-          name: 'update',
-          message: `Do you want to update ${
-            result.name
-          } from ${packageVersion} to ${latestVersion} in ${path.basename(filename)}?`,
-        },
-      ])
-      .then(async ({ update }) => {
-        if (update) {
-          if (nestedObject) {
-            fileContent[nestedKey][packageName] = '^' + latestVersion;
-          } else {
-            fileContent[packageName] = '^' + latestVersion;
-          }
-
-          fs.writeFileSync(filename, JSON.stringify(fileContent, null, 2));
-        }
+  const versions = ora(`Loading versions for ${packageName}`).start();
+  if (!packageName) return;
+  try {
+    const result = await availablePackageVersion({ name: packageName }, true);
+    versions.stop();
+    if (result.versions.length === 0) return;
+    const betaVersions = result.versions
+      .filter(version => version.match(/(beta|alpha)/g))
+      .filter((version, index, orgArray) => {
+        return orgArray.indexOf(version) > orgArray.length - 4;
+      })
+      .filter(version => {
+        return compareVersions(packageVersion.replace('^', ''), version) === -1;
       });
+    const stableVersions = result.versions
+      .filter(version => !version.match(/(beta|alpha)/g))
+      .filter((version, index, orgArray) => {
+        return orgArray.indexOf(version) > orgArray.length - 4;
+      })
+      .filter(version => {
+        return compareVersions(packageVersion.replace('^', ''), version) === -1;
+      });
+
+    if (stableVersions.length > 0 || betaVersions.length > 0) {
+      await inquirer
+        .prompt([
+          {
+            type: 'list',
+            name: 'update',
+            choices: [
+              ...stableVersions,
+              ...(stableVersions.length > 0 && betaVersions.length > 0
+                ? new inquirer.Separator()
+                : []),
+              ...(betaVersions.length > 0 ? betaVersions : []),
+              new inquirer.Separator(),
+              'No',
+            ],
+            message: `Do you want to update ${
+              result.name
+            } from ${packageVersion} to one of the listed versions? in ${path.basename(
+              filename,
+            )}?`,
+          },
+        ])
+        .then(async ({ update }) => {
+          if (update !== 'No') {
+            if (nestedObject) {
+              fileContent[nestedKey][packageName] = '^' + update;
+            } else {
+              fileContent[packageName] = '^' + update;
+            }
+
+            fs.writeFileSync(filename, JSON.stringify(fileContent, null, 2));
+          }
+        })
+        .catch(e => console.error(e));
+    }
+  } catch (e) {
+    console.error(e);
   }
 };
 
