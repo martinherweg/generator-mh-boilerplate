@@ -68,13 +68,13 @@ const updatePackage = async ({
             name: 'update',
             choices: [
               ...stableVersions,
-              ...(stableVersions.length > 0 && betaVersions.length > 0
+              stableVersions.length > 0 && betaVersions.length > 0
                 ? new inquirer.Separator()
-                : []),
+                : '',
               ...(betaVersions.length > 0 ? betaVersions : []),
               new inquirer.Separator(),
               'No',
-            ],
+            ].filter(choice => choice.length !== 0),
             message: `Do you want to update ${
               result.name
             } from ${packageVersion} to one of the listed versions? in ${path.basename(
