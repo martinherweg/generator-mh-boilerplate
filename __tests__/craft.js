@@ -51,13 +51,13 @@ describe('Craft 2 Option', () => {
   it('adds downloadPlugin dependencies to package.json', () => {
     assert.jsonFileContent('package.json', {
       devDependencies: {
-        'fs-extra': '^5.0.0',
+        'fs-extra': '^7.0.0',
+        'deep-extend': '^0.6.0',
+        download: '^7.1.0',
+        progress: '^2.0.0',
         'mem-fs': '^1.1.3',
         'mem-fs-editor': '^5.1.0',
-        inquirer: '^6.1.0',
-        'deep-extend': '^0.5.0',
-        download: '^6.2.5',
-        progress: '^2.0.0',
+        inquirer: '^6.2.0',
       },
     });
   });
