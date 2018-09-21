@@ -74,7 +74,6 @@ chunks_inject.forEach((chunk) => {
     inject: chunk.inject,
     minify: false,
     // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-    chunksSortMode: 'dependency',
   });
 
   chunks.push(plugin);
@@ -256,7 +255,6 @@ module.exports = (env = { development: true }) => {
       inject: true,
       minify: false,
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunksSortMode: 'dependency',
     }),
       new WriteFilePlugin({
         log: false,
