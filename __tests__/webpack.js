@@ -23,8 +23,8 @@ describe('testing basic webpack functionality', () => {
       .run(path.join(__dirname, '../generators/app'))
       .cd(testFolder)
       .withPrompts({
-        projectUsage: 'craft',
-        craftInstall: false,
+        projectUsage: 'laravel',
+        laravelInstall: false,
         projectFramework: 'vue',
         projectVuePlugin: ['vuerouter', 'vuex'],
       })
@@ -69,6 +69,11 @@ describe('testing basic webpack functionality', () => {
         return resolve(webpackStats);
       });
     });
+  });
+
+  afterAll(() => {
+    rootFolder = testFolder;
+    fs.removeSync(rootFolder + '/webpack/webpack.config.babel.js');
   });
 
   it('compiles webpack', () => {
@@ -138,13 +143,15 @@ describe('testing basic webpack functionality', () => {
 describe('craft2 | testing file generation', () => {
   const testFolder = path.resolve(__dirname, '../../tmp/test/');
   let rootFolder;
-  let webpackConfig;
+  let webpack2Config;
   let webpackStats;
   let webpackOutputPath;
   let assetsPath;
 
   beforeAll(async () => {
+    jest.resetModules();
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000;
+    console.log('Running craft2 generator');
     await helpers
       .run(path.join(__dirname, '../generators/app'))
       .cd(testFolder)
@@ -162,15 +169,13 @@ describe('craft2 | testing file generation', () => {
 
     rootFolder = testFolder;
     assetsPath = rootFolder + '/' + configPaths.craft.base + '/assets';
-
-    webpackConfig = await import(rootFolder + '/webpack/webpack.config.babel.js'); //
-
-    webpackConfig = webpackConfig.default({ production: true });
+    webpack2Config = await import(rootFolder + '/webpack/webpack.config.babel.js'); //
+    webpack2Config = webpack2Config.default({ production: true });
     // eslint-disable-line
-    webpackConfig.entry.testApp = path.resolve(__dirname, '__mocks__/testapp.js');
+    webpack2Config.entry.testApp = path.resolve(__dirname, '__mocks__/testapp.js');
     const webpack = require(rootFolder + '/node_modules/webpack');
     return new Promise((resolve, reject) => {
-      webpack(webpackConfig, (err, stats) => {
+      webpack(webpack2Config, (err, stats) => {
         if (err) {
           console.error(err.stack || err);
           if (err.details) {
@@ -195,6 +200,13 @@ describe('craft2 | testing file generation', () => {
         return resolve(webpackStats);
       });
     });
+  });
+
+  afterAll(() => {
+    rootFolder = testFolder;
+    fs.removeSync(rootFolder + '/webpack/webpack.config.babel.js');
+    fs.removeSync(`${rootFolder}/${configPaths.craft.views}_webpack/webpack-header.html`);
+    fs.removeSync(`${rootFolder}/${configPaths.craft.views}_webpack/webpack-scripts.html`);
   });
 
   it('generates header and scripts file', () => {
@@ -245,13 +257,15 @@ describe('craft2 | testing file generation', () => {
 describe('craft3 | testing file generation', () => {
   const testFolder = path.resolve(__dirname, '../../tmp/test/');
   let rootFolder;
-  let webpackConfig;
+  let webpack3Config;
   let webpackStats;
   let webpackOutputPath;
   let assetsPath;
 
   beforeAll(async () => {
+    jest.resetModules();
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000;
+    console.log('Running craft3 generator');
     await helpers
       .run(path.join(__dirname, '../generators/app'))
       .cd(testFolder)
@@ -270,14 +284,13 @@ describe('craft3 | testing file generation', () => {
     rootFolder = testFolder;
     assetsPath = rootFolder + '/' + configPaths.craft3.base + '/assets';
 
-    webpackConfig = await import(rootFolder + '/webpack/webpack.config.babel.js'); //
-
-    webpackConfig = webpackConfig.default({ production: true });
+    webpack3Config = await import(rootFolder + '/webpack/webpack.config.babel.js'); //
+    webpack3Config = webpack3Config.default({ production: true });
     // eslint-disable-line
-    webpackConfig.entry.testApp = path.resolve(__dirname, '__mocks__/testapp.js');
+    webpack3Config.entry.testApp = path.resolve(__dirname, '__mocks__/testapp.js');
     const webpack = require(rootFolder + '/node_modules/webpack');
     return new Promise((resolve, reject) => {
-      webpack(webpackConfig, (err, stats) => {
+      webpack(webpack3Config, (err, stats) => {
         if (err) {
           console.error(err.stack || err);
           if (err.details) {
@@ -302,6 +315,14 @@ describe('craft3 | testing file generation', () => {
         return resolve(webpackStats);
       });
     });
+  });
+
+  afterAll(() => {
+    rootFolder = testFolder;
+
+    fs.removeSync(rootFolder + '/webpack/webpack.config.babel.js');
+    fs.removeSync(`${rootFolder}/${configPaths.craft3.views}_webpack/webpack-header.html`);
+    fs.removeSync(`${rootFolder}/${configPaths.craft3.views}_webpack/webpack-scripts.html`);
   });
 
   it('generates header and scripts file', () => {
@@ -342,7 +363,7 @@ describe('craft3 | testing file generation', () => {
 
     cssFiles.forEach(file => {
       assert.fileContent(
-        `${rootFolder}/${configPaths.craft.views}_webpack/webpack-header.html`,
+        `${rootFolder}/${configPaths.craft3.views}_webpack/webpack-header.html`,
         `<link href="/assets/${file}" rel="stylesheet">`,
       );
     });
@@ -358,7 +379,9 @@ describe('Laravel | testing file generation', () => {
   let assetsPath;
 
   beforeAll(async () => {
+    jest.resetModules();
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000;
+    console.log('Running laravel generator');
     await helpers
       .run(path.join(__dirname, '../generators/app'))
       .cd(testFolder)
@@ -411,6 +434,14 @@ describe('Laravel | testing file generation', () => {
     });
   });
 
+  afterAll(() => {
+    rootFolder = testFolder;
+
+    fs.removeSync(rootFolder + '/webpack/webpack.config.babel.js');
+    fs.removeSync(`${rootFolder}/${configPaths.laravel.views}_webpack/webpack-header.blade.php`);
+    fs.removeSync(`${rootFolder}/${configPaths.laravel.views}_webpack/webpack-scripts.blade.php`);
+  });
+
   it('generates header and scripts file', () => {
     assert.file(`${rootFolder}/${configPaths.laravel.views}_webpack/webpack-header.blade.php`);
     assert.file(`${rootFolder}/${configPaths.laravel.views}_webpack/webpack-scripts.blade.php`);
@@ -429,6 +460,7 @@ describe('Laravel | testing file generation', () => {
 
   it('has webpack generated assets linked', () => {
     if (!webpackStats) return undefined;
+
 
     const { assets } = webpackStats;
     const jsFiles = assets
