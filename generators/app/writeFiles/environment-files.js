@@ -38,8 +38,12 @@ module.exports = {
       dest: 'README.md',
     },
     {
-      src: '_babelrc',
-      dest: '.babelrc',
+      src: '_babelrc.js',
+      dest: 'babel.config.js',
+    },
+    {
+      src: '_babelignore',
+      dest: '.babelignore',
     },
     {
       src: '_editorconfig',
@@ -54,8 +58,16 @@ module.exports = {
       dest: 'postcss.config.js',
     },
     {
-      src: '_stylelintrc',
-      dest: '.stylelintrc',
+      src: '_prettierrc.js',
+      dest: 'prettier.config.js',
+    },
+    {
+      src: 'tailwind.js',
+      dest: 'tailwind.js',
+    },
+    {
+      src: '_stylelintrc.js',
+      dest: 'stylelint.config.js',
     },
     {
       src: '_stylelintignore',
