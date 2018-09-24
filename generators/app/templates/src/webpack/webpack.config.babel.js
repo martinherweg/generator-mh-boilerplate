@@ -1,3 +1,4 @@
+import fs from 'fs';
 import webpack from 'webpack';
 import { getIfUtils, removeEmpty } from 'webpack-config-utils';
 import path from 'path';
@@ -10,6 +11,9 @@ import StylelintPlugin from 'stylelint-webpack-plugin';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import Stylish from 'webpack-stylish';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import PurgeCssPlugin from 'purgecss-webpack-plugin';
+import glob from 'glob-all';
+import { whitelist, whitelistPatterns, whitelistPatternsChildren} from '../../purgecss.config';
 
 <% if(projectUsage === 'vueapp' || projectFramework === 'vue') { %>
 import { VueLoaderPlugin } from 'vue-loader';
@@ -79,6 +83,16 @@ chunks_inject.forEach((chunk) => {
   chunks.push(plugin);
 });
 
+// Custom PurgeCSS extractor for Tailwind that allows special characters in
+// class names.
+//
+// https://github.com/FullHuman/purgecss#extractor
+class TailwindExtractor {
+  static extract(content) {
+    return content.match(/[A-Za-z0-9-_:\/]+/g) || [];
+  }
+}
+
 // webpack Config
 module.exports = (env = { development: true }) => {
   const { ifProduction, ifDevelopment } = getIfUtils(env);
@@ -121,15 +135,16 @@ module.exports = (env = { development: true }) => {
       publicPath: '/assets/',
       filename: ifDevelopment('js/[name].js', 'js/[name].[chunkhash].js'),
     },
+    stats: 'none',
     performance: {
       hints: false,
     },
     optimization: {
       splitChunks: {
-        chunks: 'initial'
+        chunks: 'initial',
       },
       runtimeChunk: {
-        name: 'manifest'
+        name: 'manifest',
       },
     },
     resolve: {
@@ -145,7 +160,7 @@ module.exports = (env = { development: true }) => {
         '@Images': resolve(config.srcPaths.images.base),
         '@Svg': resolve(config.srcPaths.images.svg.base),
         '@Fonts': resolve(config.srcPaths.fonts),
-      }
+      },
     },
     module: {
       rules: [
@@ -185,9 +200,11 @@ module.exports = (env = { development: true }) => {
           include: resolve(config.srcPaths.base),
           options: {
             limit: 100,
-            name: (filePath) => {
+            name: filePath => {
               const filename = path.basename(filePath);
-              const folder = path.relative(config.srcPaths.images.svg.base, filePath).replace(filename, '');
+              const folder = path
+                .relative(config.srcPaths.images.svg.base, filePath)
+                .replace(filename, '');
               return `images/svg/${folder}[name].[hash:4].[ext]`;
             },
             publicPath: '/',
@@ -198,10 +215,12 @@ module.exports = (env = { development: true }) => {
           loader: 'url-loader',
           options: {
             limit: 10000,
-            name: (filePath) => {
-             const filename = path.basename(filePath);
-             const folder = path.relative(config.srcPaths.images.base, filePath).replace(filename, '');
-             return `images/bitmap/${folder}[name].[hash:4].[ext]`;
+            name: filePath => {
+              const filename = path.basename(filePath);
+              const folder = path
+                .relative(config.srcPaths.images.base, filePath)
+                .replace(filename, '');
+              return `images/bitmap/${folder}[name].[hash:4].[ext]`;
             },
             publicPath: '/',
           },
@@ -235,7 +254,23 @@ module.exports = (env = { development: true }) => {
       ifDevelopment(new webpack.HotModuleReplacementPlugin()),
       new MiniCssExtractPlugin({
         filename: ifDevelopment('css/[name].css', 'css/[name].[chunkhash].css'),
-        chunkFilename: ifDevelopment('css/[id].css', 'css/[id].[chunkhash].css'),
+        chunkFilename: ifDevelopment('css/[name].css', 'css/[name].[chunkhash].css'),
+      }),
+      new PurgeCssPlugin({
+        content: [`${resolve('src/')}js/**/*.{js,vue,jsx}`, `${resolve('src/')}views/**/*.{js,vue,jsx,html,php}`],
+        paths: [
+          ...glob.sync(resolve('src/' + '/js/**/*.{js,vue,jsx}')),
+          ...glob.sync(resolve('src/' + '/views/**/*.{html,php,js,vue,jsx}')),
+        ],
+        extractors: [
+          {
+            extractor: TailwindExtractor,
+            extensions: ['html', 'js', 'vue', 'php']
+          }
+        ],
+        whitelist,
+        whitelistPatterns,
+        whitelistPatternsChildren,
       }),
       new StylelintPlugin({
         context: resolve('src/'),
@@ -249,13 +284,13 @@ module.exports = (env = { development: true }) => {
         },
       }),
       ...chunks,
-    new HtmlWebpackPlugin({
-      filename: path.resolve(`${config.distPaths.base}/boilerplate/typography.html`),
-      template: `${config.srcPaths.base}boilerplates/typography.html`,
-      inject: true,
-      minify: false,
+      new HtmlWebpackPlugin({
+        filename: path.resolve(`${config.distPaths.base}/boilerplate/typography.html`),
+        template: `${config.srcPaths.base}boilerplates/typography.html`,
+        inject: true,
+        minify: false,
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-    }),
+      }),
       new WriteFilePlugin({
         log: false,
         test: /^(?!.+(?:hot-update.(js|json))).+$/,

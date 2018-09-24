@@ -1,0 +1,8 @@
+/**
+* this file is only used for compiling tailwind so we get autocomplete
+ */
+
+@tailwind preflight; // stylelint-disable-line
+
+@tailwind components; // stylelint-disable-line
+@tailwind utilities; // stylelint-disable-line
