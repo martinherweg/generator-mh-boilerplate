@@ -2,6 +2,7 @@
 const path = require('path');
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
+const { getFileContent } = require('./helpers');
 
 /* eslint-disable new-cap, no-multi-str, no-template-curly-in-string, no-unused-vars, no-undef, prettier/prettier */
 const fs = require('fs-extra');
@@ -25,14 +26,13 @@ const project = {
   name: 'boilerplate-test',
   description: 'A small Test Driven Generator',
   version: '0.0.1',
-  proxy: 'boilerplate-test.dev'
+  proxy: 'boilerplate-test.dev',
 };
 const author = {
   name: 'Martin Herweg',
   email: 'info@martinherweg.de',
-  homepage: 'https://martinherweg.de'
+  homepage: 'https://martinherweg.de',
 };
-
 
 describe('generator-lilly:app', () => {
   beforeAll(() => {
@@ -61,64 +61,63 @@ describe('generator-lilly:app', () => {
 
   it('adds browserlist entry to package.json', () => {
     assert.jsonFileContent('package.json', {
-      browserslist: browsersList
+      browserslist: browsersList,
     });
   });
 
   it('adds favicon configuration to package.json', () => {
     assert.jsonFileContent('package.json', {
-      favicon: faviconEntries
+      favicon: faviconEntries,
     });
   });
 
   it('adds devDependencies for css work', () => {
     assert.JSONFileContent('package.json', {
-      devDependencies: cssDependencies
+      devDependencies: cssDependencies,
     });
   });
 
   it('adds devDependencies for gulp', () => {
     assert.JSONFileContent('package.json', {
-      devDependencies: gulpDependencies
+      devDependencies: gulpDependencies,
     });
   });
 
   it('adds devDependencies for javascript', () => {
     assert.JSONFileContent('package.json', {
-      devDependencies: javascriptDependencies
+      devDependencies: javascriptDependencies,
     });
   });
 
   it('add webpack devDependencies to package.json', () => {
     assert.JSONFileContent('package.json', {
-      devDependencies: webpackDependencies
+      devDependencies: webpackDependencies,
     });
   });
 
   it('adds files for all projects', () => {
     assert.file([
-      '.babelrc',
+      'babel.config.js',
+      '.babelignore',
       '.editorconfig',
       '.eslintrc.js',
       '.gitignore',
       'gulpfile.babel.js',
       'package.json',
       'postcss.config.js',
+      'prettier.config.js',
+      'tailwind.js',
       'README.md',
-      '.stylelintrc'
+      '.stylelintrc',
     ]);
   });
 
   it('adds javascript', () => {
-    assert.file([
-      'src/js/'
-    ]);
+    assert.file(['src/js/']);
   });
 
   it('adds scss', () => {
-    assert.file([
-      'src/scss/'
-    ]);
+    assert.file(['src/scss/', 'src/scss/tailwind.scss']);
   });
 
   it('copies gulp tasks', () => {
@@ -126,20 +125,47 @@ describe('generator-lilly:app', () => {
       'gulpfile.babel.js',
       'gulpfile/lib/',
       'gulpfile/tasks/',
-      'gulpfile/tasks/browser-sync.js'
+      'gulpfile/tasks/browser-sync.js',
     ]);
   });
 
   it('adds webpack config', () => {
-    assert.file([
-      'webpack/webpack.config.babel.js',
-      'webpack/.babelrc'
-    ]);
+    assert.file(['webpack/webpack.config.babel.js', 'webpack/.babelrc']);
   });
 
   it('adds createDirs scripts', () => {
-    assert.file([
-      'scripts/createDirs.js'
-    ]);
+    assert.file(['scripts/createDirs.js']);
+  });
+
+  it('writes prettier config', () => {
+    expect(getFileContent('prettier.config.js')).toMatchSnapshot();
+  });
+
+  it('writes babel config', () => {
+    expect(getFileContent('babel.config.js')).toMatchSnapshot();
+  });
+
+  it('writes babel ignore', () => {
+    expect(getFileContent('.babelignore')).toMatchSnapshot();
+  });
+
+  it('writes postcss config', () => {
+    expect(getFileContent('postcss.config.js')).toMatchSnapshot();
+  });
+
+  it('writes eslint config', () => {
+    expect(getFileContent('.eslintrc.js')).toMatchSnapshot();
+  });
+
+  it('writes tailwind config', () => {
+    expect(getFileContent('tailwind.js')).toMatchSnapshot();
+  });
+
+  it('writes stylelint config', () => {
+    expect(getFileContent('stylelint.config.js')).toMatchSnapshot();
+  });
+
+  it('writes app.scss', () => {
+    expect(getFileContent('src/scss/app.scss')).toMatchSnapshot();
   });
 });
