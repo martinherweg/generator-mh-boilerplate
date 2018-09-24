@@ -31,6 +31,19 @@ import yargs from 'yargs';
 const argv = yargs.argv;
 const env = argv.env || 'development';
 
+
+<% if(projectUsage === 'laravel') { %>
+const filesToIgnore = [
+  `${config.distPaths.views}_webpack/webpack-header.blade.php`,
+  `${config.distPaths.views}_webpack/webpack-scripts.blade.php`,
+];
+<% } else if (projectUsage === 'craft' || projectUsage === 'craft3') { %>
+const filesToIgnore = [
+  `${config.distPaths.views}_webpack/webpack-header.html`,
+  `${config.distPaths.views}_webpack/webpack-scripts.html`,
+];
+<% } %>
+
 const browserSyncTask = () => {
   if (env !== 'browser-sync') return;
   const bundler = webpack(webpackSettings({ development: true }));
@@ -64,32 +77,15 @@ const browserSyncTask = () => {
         log: false,
       }),
     ],
+    ignore: filesToIgnore,
     files: [
       {
-        match: [
-          `!${config.distPaths.views}parts/webpack-header.html`,
-          `!${config.distPaths.views}parts/site-scripts.html`,
-          `${config.distPaths.views}**/*.{php,html,twig}`,
-          `${config.distPaths.images.base}**/*.{jpg,png,gif,svg}`,
-        ],
+        match: [`${config.distPaths.views}**/*.{php,html,twig}`],
         fn(event, file) {
           if (event === 'change' || event === 'add') {
+            console.log(chalk`{bgRgb(250,134,223) Reloading because of {yellow ${event}} of {yellow ${file}}}`);
             browserSync.reload();
           }
-        },
-      },
-      {
-        match: [`${config.distPaths.css}**/*.{css}`],
-        fn(event, file) {
-          if (event === 'change') {
-            browserSync.reload('*.css');
-          }
-        },
-        options: {
-          ignore: [
-            `${config.distPaths.views}parts/webpack-header.html`,
-            `${config.distPaths.views}parts/site-scripts.html`,
-          ],
         },
       },
     ],
