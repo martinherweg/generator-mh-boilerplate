@@ -106,6 +106,7 @@ describe('generator-lilly:app', () => {
       'package.json',
       'postcss.config.js',
       'prettier.config.js',
+      'purgecss.config.js',
       'tailwind.js',
       'README.md',
       '.stylelintrc',

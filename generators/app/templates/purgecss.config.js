@@ -56,4 +56,4 @@ const whitelistPatternsChildren = [
   /^ie11$/,
 ];
 
-export { whitelist, whitelistPatterns, whitelistPatternsChildren };
+module.exports = { whitelist, whitelistPatterns, whitelistPatternsChildren };

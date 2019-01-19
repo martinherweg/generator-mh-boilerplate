@@ -66,6 +66,10 @@ module.exports = {
       dest: 'tailwind.js',
     },
     {
+      src: 'purgecss.config.js',
+      dest: 'purgecss.config.js',
+    },
+    {
       src: '_stylelintrc.js',
       dest: 'stylelint.config.js',
     },

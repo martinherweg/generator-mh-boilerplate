@@ -13,7 +13,7 @@ import Stylish from 'webpack-stylish';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import PurgeCssPlugin from 'purgecss-webpack-plugin';
 import glob from 'glob-all';
-import { whitelist, whitelistPatterns, whitelistPatternsChildren} from '../../purgecss.config';
+import { whitelist, whitelistPatterns, whitelistPatternsChildren} from '../purgecss.config';
 
 <% if(projectUsage === 'vueapp' || projectFramework === 'vue') { %>
 import { VueLoaderPlugin } from 'vue-loader';
