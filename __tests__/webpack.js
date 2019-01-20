@@ -9,7 +9,7 @@ const { flatten } = require('lodash');
 const { configPaths } = require('../generators/app/packageJson/paths/_distPaths');
 const { srcPaths } = require('../generators/app/packageJson/paths/_srcPaths');
 
-describe('testing basic webpack functionality', () => {
+describe.skip('testing basic webpack functionality', () => {
   const testFolder = path.resolve(__dirname, '../../tmp/test/');
   let rootFolder;
   let webpackConfig;
@@ -140,7 +140,7 @@ describe('testing basic webpack functionality', () => {
   });
 });
 
-describe('craft2 | testing file generation', () => {
+describe.skip('craft2 | testing file generation', () => {
   const testFolder = path.resolve(__dirname, '../../tmp/test/');
   let rootFolder;
   let webpack2Config;
@@ -254,7 +254,7 @@ describe('craft2 | testing file generation', () => {
   });
 });
 
-describe('craft3 | testing file generation', () => {
+describe.skip('craft3 | testing file generation', () => {
   const testFolder = path.resolve(__dirname, '../../tmp/test/');
   let rootFolder;
   let webpack3Config;
@@ -370,7 +370,7 @@ describe('craft3 | testing file generation', () => {
   });
 });
 
-describe('Laravel | testing file generation', () => {
+describe.skip('Laravel | testing file generation', () => {
   const testFolder = path.resolve(__dirname, '../../tmp/test/');
   let rootFolder;
   let webpackConfig;
