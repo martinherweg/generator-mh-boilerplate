@@ -1,0 +1,44 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/martinherweg/.nvm/versions/node/v9.11.1/bin/node',
+1 verbose cli   '/Users/martinherweg/.nvm/versions/node/v9.11.1/bin/npm',
+1 verbose cli   'run',
+1 verbose cli   'test',
+1 verbose cli   'webpack',
+1 verbose cli   '--no-cache' ]
+2 info using npm@5.6.0
+3 info using node@v9.11.1
+4 verbose run-script [ 'pretest', 'test', 'posttest' ]
+5 info lifecycle generator-lilly@2.9.0~pretest: generator-lilly@2.9.0
+6 verbose lifecycle generator-lilly@2.9.0~pretest: unsafe-perm in lifecycle true
+7 verbose lifecycle generator-lilly@2.9.0~pretest: PATH: /Users/martinherweg/.nvm/versions/node/v9.11.1/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Users/martinherweg/Projekte/_openSource/lilly/generator-lilly/node_modules/.bin:/usr/local/opt/libxml2/bin:/Users/martinherweg/.nvm/versions/node/v9.11.1/bin:/Users/martinherweg/.yarn/bin:/usr/local/opt/coreutils/libexec/gnubin:/Users/martinherweg/bin:/Users/martinherweg/.local/bin:/usr/local/bin:/usr/local/bin:/usr/local/sbin:/Users/martinherweg/.zplug/repos/zplug/zplug/bin:/Users/martinherweg/.zplug/bin:/usr/local/bin:/usr/local/sbin:/etc/Caskroom:/opt/homebrew-cask/Caskroom:/Users/martinherweg/.composer/vendor/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/share/dotnet:/opt/X11/bin:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/usr/local/share/zsh/site-functions:/usr/local/opt/go/libexec/bin:/Users/martinherweg/.composer/vendor/bin:/usr/local/opt/fzf/bin
+8 verbose lifecycle generator-lilly@2.9.0~pretest: CWD: /Users/martinherweg/Projekte/_openSource/lilly/generator-lilly
+9 silly lifecycle generator-lilly@2.9.0~pretest: Args: [ '-c', 'eslint .' ]
+10 silly lifecycle generator-lilly@2.9.0~pretest: Returned: code: 0  signal: null
+11 info lifecycle generator-lilly@2.9.0~test: generator-lilly@2.9.0
+12 verbose lifecycle generator-lilly@2.9.0~test: unsafe-perm in lifecycle true
+13 verbose lifecycle generator-lilly@2.9.0~test: PATH: /Users/martinherweg/.nvm/versions/node/v9.11.1/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Users/martinherweg/Projekte/_openSource/lilly/generator-lilly/node_modules/.bin:/usr/local/opt/libxml2/bin:/Users/martinherweg/.nvm/versions/node/v9.11.1/bin:/Users/martinherweg/.yarn/bin:/usr/local/opt/coreutils/libexec/gnubin:/Users/martinherweg/bin:/Users/martinherweg/.local/bin:/usr/local/bin:/usr/local/bin:/usr/local/sbin:/Users/martinherweg/.zplug/repos/zplug/zplug/bin:/Users/martinherweg/.zplug/bin:/usr/local/bin:/usr/local/sbin:/etc/Caskroom:/opt/homebrew-cask/Caskroom:/Users/martinherweg/.composer/vendor/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/share/dotnet:/opt/X11/bin:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/usr/local/share/zsh/site-functions:/usr/local/opt/go/libexec/bin:/Users/martinherweg/.composer/vendor/bin:/usr/local/opt/fzf/bin
+14 verbose lifecycle generator-lilly@2.9.0~test: CWD: /Users/martinherweg/Projekte/_openSource/lilly/generator-lilly
+15 silly lifecycle generator-lilly@2.9.0~test: Args: [ '-c', 'jest "webpack"' ]
+16 silly lifecycle generator-lilly@2.9.0~test: Returned: code: 1  signal: null
+17 info lifecycle generator-lilly@2.9.0~test: Failed to exec test script
+18 verbose stack Error: generator-lilly@2.9.0 test: `jest "webpack"`
+18 verbose stack Exit status 1
+18 verbose stack     at EventEmitter.<anonymous> (/Users/martinherweg/.nvm/versions/node/v9.11.1/lib/node_modules/npm/node_modules/npm-lifecycle/index.js:285:16)
+18 verbose stack     at EventEmitter.emit (events.js:180:13)
+18 verbose stack     at ChildProcess.<anonymous> (/Users/martinherweg/.nvm/versions/node/v9.11.1/lib/node_modules/npm/node_modules/npm-lifecycle/lib/spawn.js:55:14)
+18 verbose stack     at ChildProcess.emit (events.js:180:13)
+18 verbose stack     at maybeClose (internal/child_process.js:936:16)
+18 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:220:5)
+19 verbose pkgid generator-lilly@2.9.0
+20 verbose cwd /Users/martinherweg/Projekte/_openSource/lilly/generator-lilly
+21 verbose Darwin 17.7.0
+22 verbose argv "/Users/martinherweg/.nvm/versions/node/v9.11.1/bin/node" "/Users/martinherweg/.nvm/versions/node/v9.11.1/bin/npm" "run" "test" "webpack" "--no-cache"
+23 verbose node v9.11.1
+24 verbose npm  v5.6.0
+25 error code ELIFECYCLE
+26 error errno 1
+27 error generator-lilly@2.9.0 test: `jest "webpack"`
+27 error Exit status 1
+28 error Failed at the generator-lilly@2.9.0 test script.
+28 error This is probably not a problem with npm. There is likely additional logging output above.
+29 verbose exit [ 1, true ]

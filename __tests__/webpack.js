@@ -24,7 +24,7 @@ describe('testing basic webpack functionality', () => {
       .cd(testFolder)
       .withPrompts({
         projectUsage: 'laravel',
-        laravelInstall: false,
+        laravelInstall: true,
         projectFramework: 'vue',
         projectVuePlugin: ['vuerouter', 'vuex'],
       })

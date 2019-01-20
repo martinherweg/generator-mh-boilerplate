@@ -46,7 +46,7 @@ const writingLaravel = () => {
         });
 
         laravelFolders.COPY_AND_DELETE.forEach(file => {
-          if(fs.existsSync(file.src)) {
+          if(fs.existsSync(context.destinationPath(file.src))) {
             context.fs.copy(
               context.destinationPath(file.src),
               context.destinationPath(file.dest)
