@@ -7,10 +7,8 @@
   "proxy": "",
   "projectType": "",
   "browserslist": "",
-  "scripts": {
-  },
-  "devDependencies": {
-  },
+  "scripts": {},
+  "devDependencies": {},
   "dependencies": {
     "axios": "^0.17.1",
     "fontfaceobserver": "^2.0.13",

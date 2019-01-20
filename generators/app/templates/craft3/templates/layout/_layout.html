@@ -1,0 +1,12 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{# @var entry \craft\elements\Entry #}
+<!DOCTYPE html>
+    {% include 'parts/site-header' %}
+
+<main id="content" role="main">
+    {% block content %}{% endblock %}
+</main>
+
+{% include '_webpack/webpack-scripts' %}
+</body>
+</html>

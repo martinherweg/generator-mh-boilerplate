@@ -1,36 +1,26 @@
-process.env.NODE_ENV = 'test';
+'use strict';
+const path = require('path');
+const assert = require('yeoman-assert');
+const helpers = require('yeoman-test');
 
-/* eslint-disable */
-var path = require('path');
-var assert = require('yeoman-assert');
-var helpers = require('yeoman-test');
 const fs = require('fs-extra'); // eslint-disable-line no-unused-vars
 
-const {
-  configPaths
-} = require('../generators/app/modules/packageJson-modules/paths/_distPaths');
+const { configPaths } = require('../generators/app/packageJson/paths/_distPaths');
 
 const run = () => helpers.run(path.join(__dirname, '../generators/app'));
 
-beforeAll(async () => {
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000;
-  try {
-    await run().withPrompts({
-      projectUsage: 'craft3'
-    });
-  } catch (error) {
-    console.error(error);
-  }
-});
+/* eslint-disable new-cap, no-multi-str, no-template-curly-in-string */
 
-describe("it's craft 3 🎉", () => {
+describe('Craft 3 Option', () => {
+  beforeAll(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000; // eslint-disable-line
+    return run()
+      .withPrompts({ projectUsage: 'craft3', craftInstall: true })
+      .withOptions({ skipInstall: false });
+  });
+
   it('installs craft', () => {
-    assert.file([
-      'dist/web/',
-      'dist/vendor/craftcms/',
-      'dist/config/',
-      'dist/storage'
-    ]);
+    assert.file(['dist/web/', 'dist/vendor/craftcms/', 'dist/config/', 'dist/storage']);
   });
 
   it('adds nystudio craft-scripts', () => {
@@ -39,7 +29,7 @@ describe("it's craft 3 🎉", () => {
 
   it('add dist Paths for Craft', () => {
     assert.jsonFileContent('package.json', {
-      distPaths: configPaths.craft3
+      distPaths: configPaths.craft3,
     });
   });
 
@@ -53,7 +43,7 @@ describe("it's craft 3 🎉", () => {
       'src/views/layout/_layout.html',
       'src/views/parts/site-header.html',
       'src/views/_webpack/webpack-header.html',
-      'src/views/_webpack/webpack-scripts.html'
+      'src/views/_webpack/webpack-scripts.html',
     ]);
   });
 
@@ -71,7 +61,7 @@ describe("it's craft 3 🎉", () => {
         file: config.srcPaths.views + '_webpack/webpack-scripts.html',\n\
         inject: false,\n\
       }\n\
-    ]"
+    ]",
     );
   });
 });

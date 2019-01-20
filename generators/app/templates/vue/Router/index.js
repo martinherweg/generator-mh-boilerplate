@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 // import your route Components here
-import Home from '../views/Home.vue';
+import Home from '../views/Home';
 // import Example from '../views/Example.vue';
 
 

@@ -1,35 +1,26 @@
-/**
- * Test for a Vue Project Configuration
- *
- * @package  generator-lilly
- * @author   Martin Herweg <info@martinherweg.de>
- */
-
-process.env.NODE_ENV = 'test';
-/* eslint-disable new-cap */
-var path = require('path');
-var assert = require('yeoman-assert');
-var helpers = require('yeoman-test');
+'use strict';
+/* eslint-disable new-cap, no-multi-str, no-template-curly-in-string, no-unused-vars, no-undef, prettier/prettier */
+const path = require('path');
+const assert = require('yeoman-assert');
+const helpers = require('yeoman-test');
 const fs = require('fs-extra'); // eslint-disable-line no-unused-vars
 
-const vueDependencies = require('../generators/app/modules/packageJson-modules/dependencies/_vue');
+const { renderInstance } = require('../generators/app/usages/vue');
 
-const {
-  renderInstance
-} = require('../generators/app/modules/writing-modules/vue/');
+const vueDependencies = require('../generators/app/packageJson/dependencies/_vue');
 
 const runwithVue = (plugins = []) => {
   return helpers.run(path.join(__dirname, '../generators/app')).withPrompts({
     projectFramework: 'vue',
-    projectVuePlugins: plugins
+    projectVuePlugins: plugins,
   });
 };
 
 const run = () => helpers.run(path.join(__dirname, '../generators/app'));
 
-describe('It is a Vue Project 🎉', () => {
-  beforeAll(async () => {
-    await runwithVue();
+describe('Using Vue Option', () => {
+  beforeAll(() => {
+    return runwithVue();
   });
 
   it('add vue devDependencies to package.json', () => {
@@ -66,23 +57,18 @@ describe('It is a Vue Project 🎉', () => {
       "loader: 'vue-loader'"
     );
   });
-
-  it('copies index.html file to dist', async () => {
-    await runwithVue().withPrompts({
-      projectUsage: 'vueapp'
-    });
-    assert.file('src/views/index.html');
-    assert.file('dist/index.html');
-  });
 });
 
-// projectUsage as Vue
-
 describe('Vue Project Usage', () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
     await run().withPrompts({
       projectUsage: 'vueapp'
     });
+  });
+
+  it('copies index.html file to dist', async () => {
+    assert.file('src/views/index.html');
+    assert.file('dist/index.html');
   });
 
   it('add vue devDependencies to package.json', () => {
@@ -95,13 +81,6 @@ describe('Vue Project Usage', () => {
     assert.JSONFileContent('package.json', {
       dependencies: vueDependencies.dependencies
     });
-  });
-
-  it('adds vue instance to app.js', async () => {
-    await runwithVue();
-    const vueCode = renderInstance([]);
-    expect(vueCode).toMatchSnapshot();
-    assert.fileContent('src/js/app.js', renderInstance([]));
   });
 
   it('adds Vue Examples', () => {
@@ -142,64 +121,54 @@ describe('Vue Project Usage', () => {
   });
 });
 
-// vue project with all plugins
+describe('Vue Project with VueX', () => {
+  beforeAll(() => {
+    return runwithVue(['vuex']);
+  })
 
-describe('Vue Project with Plugins', () => {
-  describe('It uses VueX', () => {
-    beforeAll(async () => {
-      await runwithVue(['vuex']);
-    });
-
-    it('adds vuex to dependencies', () => {
-      assert.jsonFileContent('package.json', {
-        dependencies: vueDependencies.vueXDependencies
-      });
-    });
-
-    it('adds VueX to Vue instance to app.js', async () => {
-      const vueCode = renderInstance(['store']);
-      expect(vueCode).toMatchSnapshot();
-      assert.fileContent('src/js/app.js', renderInstance(['store']));
+  it('adds vuex to dependencies', () => {
+    assert.jsonFileContent('package.json', {
+      dependencies: vueDependencies.vueXDependencies
     });
   });
 
-  describe('It uses Vue Router', () => {
-    beforeAll(async () => {
-      await runwithVue(['vuerouter']);
-    });
+  it('adds VueX to Vue instance to app.js', async () => {
+    const vueCode = renderInstance(['store']);
+    expect(vueCode).toMatchSnapshot();
+    assert.fileContent('src/js/app.js', renderInstance(['store']));
+  });
+});
 
-    it('Router to dependencies', () => {
-      assert.JSONFileContent('package.json', {
-        dependencies: vueDependencies.routerDependencies
-      });
-    });
+describe('Vue Project with Vue Router', () => {
+  beforeAll(() => {
+    return runwithVue(['vuerouter']);
+  })
 
-    it('adds Vue Router to Vue instance to app.js', async () => {
-      const vueCode = renderInstance(['router']);
-      expect(vueCode).toMatchSnapshot();
-      assert.fileContent('src/js/app.js', renderInstance(['router']));
+  it('Router to dependencies', () => {
+    assert.JSONFileContent('package.json', {
+      dependencies: vueDependencies.routerDependencies
     });
   });
 
-  describe('It uses Vue Router and VueX', () => {
-    beforeAll(async () => {
-      await runwithVue(['vuerouter', 'vuex']);
-    });
+  it('adds Vue Router to Vue instance to app.js', async () => {
+    const vueCode = renderInstance(['router']);
+    expect(vueCode).toMatchSnapshot();
+    assert.fileContent('src/js/app.js', renderInstance(['router']));
+  });
+})
 
-    it('adds router and vuex dependencies', () => {
-      const pluginDependencies = Object.assign(
-        vueDependencies.vueXDependencies,
-        vueDependencies.routerDependencies
-      );
-      assert.jsonFileContent('package.json', {
-        dependencies: pluginDependencies
-      });
-    });
+describe('Vue Projects which uses both Plugins', () => {
+  beforeAll(() => {
+    runwithVue(['vuerouter', 'vuex'])
+  })
 
-    it('adds VueX and Vue Router to Vue instance to app.js', async () => {
-      const vueCode = renderInstance(['store', 'router']);
-      expect(vueCode).toMatchSnapshot();
-      assert.fileContent('src/js/app.js', renderInstance(['store', 'router']));
+  it('adds router and vuex dependencies', () => {
+    const pluginDependencies = Object.assign(
+      vueDependencies.vueXDependencies,
+      vueDependencies.routerDependencies
+    );
+    assert.jsonFileContent('package.json', {
+      dependencies: pluginDependencies
     });
   });
 });

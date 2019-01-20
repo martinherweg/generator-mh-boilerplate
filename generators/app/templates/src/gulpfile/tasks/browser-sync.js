@@ -31,9 +31,22 @@ import yargs from 'yargs';
 const argv = yargs.argv;
 const env = argv.env || 'development';
 
+
+<% if(projectUsage === 'laravel') { %>
+const filesToIgnore = [
+  `${config.distPaths.views}_webpack/webpack-header.blade.php`,
+  `${config.distPaths.views}_webpack/webpack-scripts.blade.php`,
+];
+<% } else if (projectUsage === 'craft' || projectUsage === 'craft3') { %>
+const filesToIgnore = [
+  `${config.distPaths.views}_webpack/webpack-header.html`,
+  `${config.distPaths.views}_webpack/webpack-scripts.html`,
+];
+<% } %>
+
 const browserSyncTask = () => {
-  if(env !== 'browser-sync') return;
-  const bundler = webpack(webpackSettings);
+  if (env !== 'browser-sync') return;
+  const bundler = webpack(webpackSettings({ development: true }));
   browserSync.init({
     proxy: {
       target: config.proxy,
@@ -53,31 +66,24 @@ const browserSyncTask = () => {
     },
     middleware: [
       webpackDevMiddleware(bundler, {
-        quiet: true,
-        path: webpackSettings.output.path,
-        publicPath: webpackSettings.output.publicPath,
+        logLevel: 'silent',
+        path: webpackSettings({ development: true }).output.path,
+        publicPath: webpackSettings({ development: true }).output.publicPath,
         stats: {
           colors: true,
         },
       }),
       webpackHotMiddleware(bundler, {
-        log: () => {},
+        log: false,
       }),
     ],
+    ignore: filesToIgnore,
     files: [
       {
-        match: [
-          `${config.srcPaths.views}**/*.{php,html,twig}`,
-          `${config.distPaths.css}**/*.css`,
-          `${config.distPaths.images.base}**/*.{jpg,png,gif,svg}`,
-        ],
-        fn: function(event, file) {
-          console.log(chalk`{green Changed ${file}}`);
-          console.log(chalk`{red Event ${event}}`);
-          if (event === 'change' && file.includes('.css')) {
-            browserSync.reload('*.css');
-          }
-          if (event === 'change' && (file.includes('.php') || file.includes('.html') || file.includes('.twig'))) {
+        match: [`${config.distPaths.views}**/*.{php,html,twig}`],
+        fn(event, file) {
+          if (event === 'change' || event === 'add') {
+            console.log(chalk`{bgRgb(250,134,223) Reloading because of {yellow ${event}} of {yellow ${file}}}`);
             browserSync.reload();
           }
         },
@@ -86,11 +92,9 @@ const browserSyncTask = () => {
   });
 };
 
-
 const browserSyncReload = () => {
   browserSync.reload();
 };
-
 
 gulp.task('browser-sync', browserSyncTask);
 gulp.task('bs-reload', browserSyncReload);

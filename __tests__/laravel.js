@@ -1,58 +1,39 @@
-/**
- * Test for a Laravel Project Configuration
- *
- * @package  generator-lilly
- * @author   Martin Herweg <info@martinherweg.de>
- */
-
-process.env.NODE_ENV = 'test';
-/* eslint-disable new-cap */
-var path = require('path');
-var assert = require('yeoman-assert');
-var helpers = require('yeoman-test');
+'use strict';
+/* eslint-disable new-cap, no-multi-str, no-template-curly-in-string, no-unused-vars, no-undef, prettier/prettier */
+const path = require('path');
+const assert = require('yeoman-assert');
+const helpers = require('yeoman-test');
 const fs = require('fs-extra'); // eslint-disable-line no-unused-vars
 const commandExists = require('command-exists');
 
-const {configPaths} = require('../generators/app/modules/packageJson-modules/paths/_distPaths');
-
 const run = () => helpers.run(path.join(__dirname, '../generators/app'));
+const { configPaths } = require('../generators/app/packageJson/paths/_distPaths');
 
-/* eslint-disable */
-
-beforeAll(() => {
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000;
-});
-
-/* eslint-enable */
-
-describe('its a Laravel Application Whoops 🎉', () => {
+describe('Using Laravel Option', () => {
   beforeAll(() => {
-    return run()
-      .withPrompts({
-        projectUsage: 'laravel'
-      })
-      .inTmpDir(dir => {
-        console.log(dir);
-        return dir;
-      });
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000; // eslint-disable-line
+    return run().withPrompts({ projectUsage: 'laravel', laravelInstall: false });
   });
 
   it('fills package.json with projectType Laravel', () => {
     assert.jsonFileContent('package.json', {
-      projectType: 'laravel'
+      projectType: 'laravel',
     });
   });
 
   it('add dist Paths for Craft', () => {
     assert.jsonFileContent('package.json', {
-      distPaths: configPaths.laravel
+      distPaths: configPaths.laravel,
     });
   });
 
   it('add laravel ignore to .gitignore', () => {
-    const laravelIgnore = fs.readFileSync(path.join(__dirname, '../generators/app/templates/laravel/_gitignore'), {
-      encoding: 'UTF-8'
-    });
+    const laravelIgnore = fs.readFileSync(
+      path.join(__dirname, '../generators/app/templates/laravel/_gitignore'),
+      {
+        encoding: 'UTF-8',
+      },
+    );
     assert.fileContent('.gitignore', laravelIgnore);
   });
 
@@ -62,30 +43,31 @@ describe('its a Laravel Application Whoops 🎉', () => {
       'src/views/_layout/_layout.blade.php',
       'src/views/_parts/site-header.blade.php',
       'src/views/_webpack/webpack-header.blade.php',
-      'src/views/_webpack/webpack-scripts.blade.php'
+      'src/views/_webpack/webpack-scripts.blade.php',
     ]);
   });
 
   it('removes original Laravel views and Public Folder', () => {
-    assert.noFile([
-      'dist/resources/views/welcome.blade.php'
-    ]);
+    assert.noFile(['dist/resources/views/welcome.blade.php']);
   });
 
   /* eslint-disable */
   it('adds laravel chunks to webpack config', () => {
-    assert.fileContent('webpack/webpack.config.babel.js', 'const chunks_inject = [\n\
+    assert.fileContent(
+      'webpack/webpack.config.babel.js',
+      "const chunks_inject = [\n\
       {\n\
         filename: path.resolve(`${config.distPaths.views}_webpack/webpack-header.blade.php`),\n\
-        file: config.srcPaths.views + \'_webpack/webpack-header.blade.php\',\n\
+        file: config.srcPaths.views + '_webpack/webpack-header.blade.php',\n\
         inject: false,\n\
       },\n\
       {\n\
         filename: path.resolve(`${config.distPaths.views}_webpack/webpack-scripts.blade.php`),\n\
-        file: config.srcPaths.views + \'_webpack/webpack-scripts.blade.php\',\n\
+        file: config.srcPaths.views + '_webpack/webpack-scripts.blade.php',\n\
         inject: false,\n\
       }\n\
-    ]');
+    ]",
+    );
   });
 });
 
@@ -93,11 +75,10 @@ describe('if the user wants and composer is available we install laravel', async
   try {
     await commandExists('composer');
     beforeAll(() => {
-      return run()
-        .withPrompts({
-          projectUsage: 'laravel',
-          laravelInstall: true
-        });
+      return run().withPrompts({
+        projectUsage: 'laravel',
+        laravelInstall: true,
+      });
     });
 
     it('adds Laravel', () => {
@@ -111,10 +92,10 @@ describe('if the user wants and composer is available we install laravel', async
         'dist/storage/',
         'dist/tests/',
         'dist/vendor/',
-        'dist/vendor/laravel/'
+        'dist/vendor/laravel/',
       ]);
     });
-  } catch(e) {
+  } catch (e) {
     console.error('Composer is not available, test passes');
     assert.noFile([
       'dist/app/',
@@ -126,7 +107,7 @@ describe('if the user wants and composer is available we install laravel', async
       'dist/storage/',
       'dist/tests/',
       'dist/vendor/',
-      'dist/vendor/laravel/'
-    ])
+      'dist/vendor/laravel/',
+    ]);
   }
 });

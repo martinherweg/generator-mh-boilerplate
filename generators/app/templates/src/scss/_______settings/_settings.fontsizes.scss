@@ -12,62 +12,21 @@
 |--------------------------------------------------------------------------
 */
 
-@import 'settings.global';
-@import '../______tools/tools.function.pow';
-@import '../______tools/tools.function.rem_calc';
+@import '~modularscale-sass/stylesheets/modularscale';
 
-/*--------------------------------------------------
-    #FONT SIZES
-  --------------------------------------------------*/
+$base-font-size: 16px;
+$max-font-size: 21px;
+$base-line-height: 1.5;
 
-/* stylelint-disable scss/dollar-variable-colon-space-after, scss/dollar-variable-pattern */
-
-$font-size-min:          16px;
-$font-size-max:          18px;
-$line-height-base:       1.5;
-$line-height-base-px:    $font-size-min * $line-height-base + 0px; /* stylelint-disable-line length-zero-no-unit */
-$rem-base: 16px;
-$em-base: 16px;
-
-
-
-// Modular Scale Settings
-$ms-width-min:           480px;
-$ms-width-max:           $app-max-width;
-$ms-factor:              1.2;
-
-
-// Nothing to change here
-$ms-2:                  11px;
-$ms-1:                  13px;
-$ms0:                   $font-size-min;
-$ms1:                   $font-size-min * pow($ms-factor, 1);
-$ms2:                   $font-size-min * pow($ms-factor, 2);
-$ms3:                   $font-size-min * pow($ms-factor, 3);
-$ms4:                   $font-size-min * pow($ms-factor, 4);
-$ms5:                   $font-size-min * pow($ms-factor, 5);
-$ms6:                   $font-size-min * pow($ms-factor, 6);
-$ms7:                   $font-size-min * pow($ms-factor, 7);
-$ms8:                   $font-size-min * pow($ms-factor, 8);
-$ms9:                   $font-size-min * pow($ms-factor, 9);
-$ms-font-min:            rem-calc($font-size-min, 16px);
-$ms-font-max:            rem-calc($font-size-max, 16px);
-
-
-// Font Map
-$app-fontsizes: (
-  'ms-2':               rem-calc($ms-2),
-  'ms-1':               rem-calc($ms-1),
-  'ms0':                rem-calc($ms0),
-  'ms1':                rem-calc($ms1),
-  'ms2':                rem-calc($ms2),
-  'ms3':                rem-calc($ms3),
-  'ms4':                rem-calc($ms4),
-  'ms5':                rem-calc($ms5),
-  'ms6':                rem-calc($ms6),
-  'ms7':                rem-calc($ms7),
-  'ms8':                rem-calc($ms8),
-  'ms9':                rem-calc($ms9),
+$modularscale: (
+  base: $base-font-size,
+  ratio: $major-second,
+  $breakpoint-xs: (
+    base: $base-font-size,
+    ratio: $major-second,
+  ),
+  $breakpoint-xl: (
+    base: $max-font-size,
+    ratio: $fourth,
+  ),
 );
-
-/* stylelint-enable scss/dollar-variable-colon-space-after, scss/dollar-variable-pattern */

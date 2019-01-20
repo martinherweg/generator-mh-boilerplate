@@ -1,68 +1,47 @@
-/**
- * Yeoman Generator
- *
- * @package  generator-lilly
- * @author   Martin Herweg <info@martinherweg.de>
- */
-
 'use strict';
 const Generator = require('yeoman-generator');
-const chalk = require('chalk'); // eslint-disable-line no-unused-vars
 const filesystem = require('fs-extra'); // eslint-disable-line no-unused-vars
 const commandExists = require('command-exists');
 const ProgressBar = require('progress'); // eslint-disable-line no-unused-vars
 
-// Import Helpers
-const logComment = require('./helpers/_logComment');
-
-// Importing modules
-const promptsFunction = require('./modules/prompts');
-const intro = require('./modules/intro');
-const writePackageJson = require('./modules/writing-modules/_package.json');
-const filesEnvironment = require('./config/_filesEnvironment');
-
+// require some usage files
 // Craft CMS
-const writingCraft = require('./modules/writing-modules/craft');
-const writingCraft3 = require('./modules/writing-modules/craft3');
+const craft2 = require('./usages/craft');
+const craft3 = require('./usages/craft3');
 
 // Laravel
-const writingLaravel = require('./modules/writing-modules/laravel');
+const laravel = require('./usages/laravel');
 
-// Vue JS
-const writingVue = require('./modules/writing-modules/vue');
+// Vue
+const vue = require('./usages/vue');
 
-// Script Helpers
-const writingScripts = require('./modules/writing-modules/scripts');
+// Import Helpers
+const logComment = require('./helpers/logComment');
 
 module.exports = class extends Generator {
   constructor(args, opts) {
     super(args, opts);
 
+    this.logComment = logComment.bind(this);
+
+    // Beta option
     this.option('beta');
 
-    this.logComment = logComment.bind(this);
-    this.promptsFunction = promptsFunction.bind(this);
-    this.writePackageJson = writePackageJson.bind(this);
-    this.filesEnviroment = filesEnvironment;
+    // Bind usages
+    this.craft2 = craft2.bind(this);
+    this.craft3 = craft3.bind(this);
+    this.laravel = laravel.bind(this);
 
-    // CRAFT CMS
-    this.writingCraft = writingCraft.bind(this);
-    this.writingCraft3 = writingCraft3.bind(this);
-    // Laravel
-    this.writingLaravel = writingLaravel.bind(this);
-
-    // Scripts
-    this.writingScripts = writingScripts.bind(this);
-
+    // Check for cli commands
     this.commands = {
       composer: false,
       yarn: false,
-      git: false
+      git: false,
     };
   }
 
   async initializing() {
-    this.logComment({message: 'Initializing the Generator'});
+    this.logComment({ message: 'Initializing the Generator' });
     await Promise.all(
       Object.keys(this.commands).map(command => {
         return commandExists(command)
@@ -70,36 +49,34 @@ module.exports = class extends Generator {
             this.commands[commandResult] = true;
           })
           .catch(error => console.warn(error));
-      })
+      }),
     );
   }
 
   prompting() {
     // Have Yeoman greet the user.
-    this.log(intro);
-    this.logComment({message: 'Prompting'});
-    // Execute function so we get its returned array;
-    const prompts = promptsFunction(this);
-    return this.prompt(prompts).then(props => {
+    this.log(require('./helpers/intro'));
+
+    const prompts = require('./prompts');
+    return this.prompt(prompts(this)).then(props => {
       // To access props later use this.props.someAnswer;
       this.props = props;
     });
   }
 
   async configuring() {
-    this.logComment({message: 'Configure Project'});
+    this.logComment({ message: 'Install Stuff' });
     // Install Craft or Laravel and configure their Folders for our needs.
-    if (this.props.projectUsage === 'craft' && this.props.craftInstall) {
+    if (this.props.projectUsage === 'craft' && !this.options.skipInstall) {
       try {
-        await this.writingCraft().download(this);
+        await this.craft2().download(this);
       } catch (e) {
         console.error(e);
       }
     }
-
-    if (this.props.projectUsage === 'craft3') {
+    if (this.props.projectUsage === 'craft3' && !this.options.skipInstall) {
       try {
-        await this.writingCraft3().download(this);
+        await this.craft3().download(this);
       } catch (e) {
         console.error(e);
       }
@@ -108,15 +85,15 @@ module.exports = class extends Generator {
     // Download fresh copy of craft-scripts by ny-studio
     if (this.props.projectUsage === 'craft') {
       try {
-        await this.writingCraft().downloadCraftScripts(this);
+        await this.craft2().downloadCraftScripts(this);
       } catch (e) {
         console.error(e);
       }
     }
 
-    if (this.props.projectUsage === 'laravel' && this.props.laravelInstall) {
+    if (this.props.projectUsage === 'laravel' && !this.options.skipInstall) {
       try {
-        await this.writingLaravel().download(this);
+        await this.laravel().download(this);
       } catch (e) {
         console.error(e);
       }
@@ -124,105 +101,116 @@ module.exports = class extends Generator {
   }
 
   async writing() {
-    this.logComment({message: 'Writing files'});
+    const packageScripts = require('./usages/scripts');
+    this.logComment({ message: 'Writing files' });
     // This is a bit hacky
     if (this.props.projectUsage === 'vueapp') {
       this.props.projectFramework = false;
     }
-    // Getting the template files
+
+    // Write first parts of package.json
     const pkg = this.fs.readJSON(this.templatePath('_package.json'), {});
+    await packageScripts().writing(this);
 
-    await this.writingScripts().writing(this);
-
+    // Copying the different usages stuff
     /*
      |--------------------------------------------------------------------------
      | Writing Craft
      |--------------------------------------------------------------------------
      */
     if (this.props.projectUsage === 'craft') {
-      this.logComment({message: 'Moving Craft Folders'});
+      this.logComment({ message: 'Moving Craft Folders' });
       try {
-        await this.writingCraft().writing(this);
+        await this.craft2().writing(this);
       } catch (e) {
         console.error(e);
       }
     }
 
     if (this.props.projectUsage === 'craft3') {
-      this.logComment({message: 'Moving Craft Folders'});
+      this.logComment({ message: 'Moving Craft Folders' });
       try {
-        await this.writingCraft3().writing(this);
+        await this.craft3().writing(this);
       } catch (e) {
         console.error(e);
       }
     }
 
     /*
-     |--------------------------------------------------------------------------
-     | Writing Laravel
-     |--------------------------------------------------------------------------
-     */
+    |--------------------------------------------------------------------------
+    | Writing Laravel
+    |--------------------------------------------------------------------------
+    */
 
     if (this.props.projectUsage === 'laravel') {
       this.logComment({
-        message: 'Moving Laravel Folders'
+        message: 'Moving Laravel Folders',
       });
       try {
-        await this.writingLaravel().writing(this);
+        await this.laravel().writing(this);
       } catch (e) {
         console.error(e);
       }
     }
 
-    if (
-      this.props.projectFramework === 'vue' ||
-      this.props.projectUsage === 'vueapp'
-    ) {
+    /*
+    |--------------------------------------------------------------------------
+    | Writing Vue
+    |--------------------------------------------------------------------------
+    */
+
+    if (this.props.projectFramework === 'vue' || this.props.projectUsage === 'vueapp') {
       this.logComment({
-        message: 'Adding Vue to the Project'
+        message: 'Adding Vue to the Project',
       });
 
       try {
-        await writingVue.writingVue().writing({
+        await vue.writingVue().writing({
           files: {
-            pkg
+            pkg,
           },
-          context: this
+          context: this,
         });
       } catch (e) {
         console.error(e);
       }
     }
+
     /*
      |--------------------------------------------------------------------------
      | Moving Basic Boilerplate Files
      |--------------------------------------------------------------------------
      */
-    this.logComment({message: 'Moving Basic Folder', short: true});
+    this.logComment({ message: 'Moving Basic Folder', short: true });
 
     const filesEnvironmentProgress = new ProgressBar('[:bar] :percent :etas', {
       complete: '=',
       incomplete: ' ',
       width: 20,
-      total: 0
+      total: 0,
     });
 
-    filesEnvironmentProgress.total = this.filesEnviroment.files.length;
+    const environmentFiles = require('./writeFiles/environment-files');
+    const writePackageJson = require('./packageJson/write-package-json');
+    filesEnvironmentProgress.total = environmentFiles.files.length;
 
-    this.filesEnviroment.files.forEach(file => {
+    environmentFiles.simpleCopy.forEach(file => {
+      this.fs.copy(this.templatePath(file.src), this.destinationPath(file.dest));
+    });
+    environmentFiles.files.forEach(file => {
       this.fs.copyTpl(
         this.templatePath(file.src),
         this.destinationPath(file.dest),
-        this.props
+        this.props,
       );
       filesEnvironmentProgress.tick(1);
     });
     // Write Basic package.json
-    this.writePackageJson({
+    writePackageJson({
       context: this,
       files: {
-        pkg
-      }
+        pkg,
+      },
     });
 
     await this.fs.writeJSON(this.destinationPath('package.json'), pkg);
@@ -238,10 +226,10 @@ module.exports = class extends Generator {
     this.logComment({
       message: '> Initializing git and make first commit',
       short: true,
-      color: 'green'
+      color: 'green',
     });
 
-    if (this.commands.git) {
+    if (this.commands.git && !this.options.skipInstall) {
       this.spawnCommandSync('git', ['init']);
       if (process.env.NODE_ENV === 'test') {
         return;

@@ -13,6 +13,7 @@
 
 
 .c-button {
+  @include ms-respond(font-size, 0);
   display: inline-block;
 
   margin: verticalrhythm(1) 0;
@@ -27,9 +28,8 @@
   border: 0;
   background: color('white');
 
-  font-size: fontsize('ms1');
   font-weight: 700;
-  line-height: $line-height-base-px;
+  line-height: $base-line-height;
 
   &:hover {
     color: color('white');
