@@ -1,6 +1,6 @@
 {
   "name": "generator-lilly",
-  "version": "2.9.1",
+  "version": "2.9.2",
   "description": "Personal boilerplate for Martin Herweg, Configurable for Laravel, Craft CMS and Vue",
   "homepage": "https://github.com/martinherweg/lilly",
   "author": {
